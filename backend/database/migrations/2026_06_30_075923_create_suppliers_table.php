@@ -10,8 +10,9 @@ return new class extends Migration
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tenant_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('code')->unique()->nullable();
+            $table->string('code')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('contact_person')->nullable();
@@ -19,6 +20,8 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->unique(['tenant_id', 'code']);
         });
     }
 

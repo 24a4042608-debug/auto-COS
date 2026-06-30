@@ -10,12 +10,14 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('sku')->unique();
+            $table->foreignId('tenant_id')->constrained()->cascadeOnDelete();
+            $table->string('sku');
             $table->string('barcode')->nullable();
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->text('short_description')->nullable();
             $table->longText('description')->nullable();
+            $table->json('attributes')->nullable(); // Dynamic product-level attributes
 
             // Relations
             $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
@@ -41,6 +43,9 @@ return new class extends Migration
             $table->enum('status', ['draft', 'active', 'inactive'])->default('draft');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['tenant_id', 'sku']);
+            $table->unique(['tenant_id', 'slug']);
         });
     }
 

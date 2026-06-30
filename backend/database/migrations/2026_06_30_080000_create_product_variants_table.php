@@ -10,16 +10,19 @@ return new class extends Migration
     {
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tenant_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->string('sku')->unique();
+            $table->string('sku');
             $table->string('barcode')->nullable();
-            $table->json('attributes'); // {"color": "Red", "size": "M"}
+            $table->json('attribute_values'); // {"color": "Red", "size": "M"}
             $table->decimal('price', 15, 2)->nullable();
             $table->decimal('sale_price', 15, 2)->nullable();
             $table->decimal('cost_price', 15, 2)->nullable();
             $table->integer('stock')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->unique(['tenant_id', 'sku']);
         });
     }
 

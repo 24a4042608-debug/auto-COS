@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Traits\BelongsToTenant;
+
 class Product extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BelongsToTenant;
 
     protected $fillable = [
-        'sku', 'barcode', 'name', 'slug', 'short_description', 'description',
-        'category_id', 'brand_id', 'supplier_id',
+        'tenant_id', 'sku', 'barcode', 'name', 'slug', 'short_description', 'description',
+        'attributes', 'category_id', 'brand_id', 'supplier_id',
         'cost_price', 'price', 'sale_price',
         'stock', 'min_stock',
         'seo_title', 'seo_description',
@@ -23,6 +25,7 @@ class Product extends Model
 
     protected $casts = [
         'tags'         => 'array',
+        'attributes'   => 'array',
         'has_variants' => 'boolean',
         'cost_price'   => 'decimal:2',
         'price'        => 'decimal:2',

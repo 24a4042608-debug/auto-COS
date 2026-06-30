@@ -5,9 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+use App\Traits\BelongsToTenant;
+
 class Brand extends Model
 {
-    protected $fillable = ['name', 'slug', 'logo', 'description', 'is_active'];
+    use BelongsToTenant;
+
+    protected $fillable = ['tenant_id', 'name', 'slug', 'logo', 'description', 'is_active'];
 
     protected $casts = ['is_active' => 'boolean'];
 

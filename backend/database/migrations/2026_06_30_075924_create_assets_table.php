@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tenant_id')->constrained()->cascadeOnDelete();
             $table->string('filename');
             $table->string('original_name');
             $table->string('disk')->default('local'); // local, s3

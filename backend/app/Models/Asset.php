@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Traits\BelongsToTenant;
+
 class Asset extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BelongsToTenant;
 
     protected $fillable = [
-        'filename', 'original_name', 'disk', 'path', 'url',
+        'tenant_id', 'filename', 'original_name', 'disk', 'path', 'url',
         'mime_type', 'type', 'size', 'width', 'height', 'tags', 'alt_text',
     ];
 

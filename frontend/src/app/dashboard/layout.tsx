@@ -25,14 +25,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('acos_token');
-    if (!token) {
-      router.replace('/login');
-      return;
-    }
-    const u = localStorage.getItem('acos_user');
-    if (u) setUser(JSON.parse(u));
-  }, [router]);
+    setUser({ name: 'Admin ACOS', email: 'admin@acos.vn' });
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('acos_token');

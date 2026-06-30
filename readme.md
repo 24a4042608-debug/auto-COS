@@ -26,11 +26,11 @@ ACOS không chỉ dừng lại ở một công cụ quản lý mà hướng tớ
 
 | Tính năng | Giai đoạn 1 (MVP) | Giai đoạn 2 & Tương lai (Non-MVP) |
 | :--- | :---: | :---: |
-| **Hệ thống cốt lõi** | Quản lý sản phẩm, Danh mục, Thương hiệu, Nhà cung cấp | Phân quyền chi tiết (RBAC), Multi-tenant |
+| **Hệ thống cốt lõi** | Quản lý sản phẩm, Danh mục, Thương hiệu, Nhà cung cấp, **Multi-tenant (SaaS)**, **Thuộc tính động (Multi-industry)** | Phân quyền chi tiết (RBAC) |
 | **Media Center** | Quản lý ảnh/video độc lập, Tự động map sản phẩm qua tên file | Tự động tối ưu dung lượng, Đóng dấu ảnh (Watermark) hàng loạt |
 | **Xử lý dữ liệu** | Import/Export Excel & CSV | Đồng bộ thời gian thực từ Google Sheet, Kết nối API bên thứ 3 |
 | **Đăng tải đa kênh** | Chuẩn bị cấu trúc dữ liệu để sẵn sàng tích hợp | Publisher Framework (Shopee, TikTok Shop, Web tự sở hữu) |
-| **Trợ lý AI** | Chưa tích hợp | Tự động crawl đối thủ, Sinh nội dung chuẩn SEO bằng LLM |
+| **Trợ lý AI** | Chưa tích hợp | Tự động cào dữ liệu đối thủ, Sinh nội dung chuẩn SEO bằng LLM |
 | **Hệ thống điều khiển** | Giao diện Web (Dashboard) | Điều khiển & nhận báo cáo trực tiếp qua Telegram Bot |
 | **Quản trị vận hành** | Nhật ký hoạt động (Activity Log), Thông báo nội bộ | Quản lý đơn hàng (OMS), Kho vận nâng cao (WMS), CRM & ERP |
 
@@ -123,18 +123,21 @@ sequenceDiagram
 ## 5. Thiết kế chi tiết các Module
 
 ### 5.1. Product Management (Quản lý sản phẩm)
-Module quản lý toàn bộ thông tin sản phẩm từ thông tin cơ bản, thuộc tính SEO, đến các phiên bản biến thể.
+Module quản lý toàn bộ thông tin sản phẩm từ thông tin cơ bản, thuộc tính SEO, đến các phiên bản biến thể, hỗ trợ đa doanh nghiệp và đa ngành hàng.
 
 *   **Thông tin cốt lõi (Core Fields):**
-    *   *Định danh:* SKU (mã định danh duy nhất), Barcode.
+    *   *Phân tách dữ liệu:* Thuộc về một Cửa hàng/Doanh nghiệp cụ thể (`tenant_id`).
+    *   *Định danh:* SKU (mã định danh duy nhất trong mỗi store), Barcode.
     *   *Thông tin cơ bản:* Tên sản phẩm, Thương hiệu (Brand), Danh mục (Category), Nhà cung cấp (Supplier).
     *   *Giá cả:* Giá vốn (Cost Price), Giá bán lẻ (Price), Giá khuyến mãi (Sale Price).
     *   *Tồn kho:* Số lượng tồn kho (Stock).
-    *   *Tối ưu hóa tìm kiếm (SEO):* Slug, Tiêu đề SEO (SEO Title), Mô tả SEO (SEO Description).
+    *   *Thông số kỹ thuật động:* Lưu trữ thông tin đặc thù của từng ngành hàng dưới dạng `JSON` (ví dụ: Chất liệu, Xuất xứ với thời trang; CPU, Pin với điện thoại) được định nghĩa linh hoạt trong bảng `attributes`.
+    *   *Tối ưu hóa tìm kiếm (SEO):* Slug (độc nhất theo store), Tiêu đề SEO (SEO Title), Mô tả SEO (SEO Description).
     *   *Phân loại & tìm kiếm nhanh:* Tags, Mô tả ngắn, Mô tả chi tiết.
 *   **Quản lý biến thể (Product Variants):**
-    *   Hỗ trợ sản phẩm có nhiều thuộc tính (ví dụ: Kích thước, Màu sắc).
-    *   Mỗi biến thể có SKU riêng, Barcode riêng, Giá bán riêng, và số lượng tồn kho riêng biệt.
+    *   Hỗ trợ sản phẩm có nhiều thuộc tính biến thể (ví dụ: Kích thước, Màu sắc đối với quần áo; Dung lượng, Màu sắc đối với điện thoại).
+    *   Lưu trữ các giá trị thuộc tính biến thể dưới dạng `JSON` (`attribute_values`).
+    *   Mỗi biến thể có SKU riêng (độc nhất theo store), Barcode riêng, Giá bán riêng, và số lượng tồn kho riêng biệt.
 
 ### 5.2. Media Center (Trung tâm lưu trữ)
 Hệ thống quản lý tệp tin đa phương tiện được thiết kế tách biệt với sản phẩm để tối ưu khả năng tái sử dụng hình ảnh/video.
@@ -196,34 +199,37 @@ Cho phép người quản lý vận hành và ra lệnh cho hệ thống một c
 
 ## 7. Thiết kế Cơ sở Dữ liệu chính
 
-Hệ thống sử dụng hệ quản trị cơ sở dữ liệu **PostgreSQL** với các bảng chính sau:
+Hệ thống sử dụng hệ quản trị cơ sở dữ liệu **PostgreSQL/MySQL** hỗ trợ Multi-tenant (phân tách bằng `tenant_id`) và lưu trữ thuộc tính động bằng cột `JSON`:
 
 ```
-┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐
-│      users       │       │     products     │       │    categories    │
-└──────────────────┘       └─────────┬────────┘       └─────────┬────────┘
-                                     │                          │
-                                     ├─ (1:N) ─> variants       │
-                                     │                          │
-                                     ├─ (1:N) ─> product_assets ◄── (1:N) ── assets
-                                     │
-                                     └─ (1:N) ─> publish_jobs
+                   ┌──────────────────┐
+                   │     tenants      │
+                   └────────┬─────────┘
+                            │ (1:N)
+      ┌─────────────┬───────┼─────────────┬─────────────┐
+      ▼             ▼       ▼             ▼             ▼
+┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
+│  users   │ │categories│ │  brands  │ │suppliers │ │products  │
+└──────────┘ └──────────┘ └──────────┘ └──────────┘ └────┬─────┘
+                                                        │ (1:N)
+                                                        ├─> product_variants
+                                                        │
+                                                        └─> product_assets ◄── assets
 ```
 
-1.  **`users`**: Lưu thông tin tài khoản quản trị hệ thống.
-2.  **`products`**: Thông tin chung của sản phẩm (Tên, mô tả, thương hiệu, danh mục,...).
-3.  **`product_variants`**: Các biến thể của sản phẩm (Màu sắc, kích thước, SKU riêng, giá, tồn kho).
-4.  **`categories`**: Danh mục sản phẩm (Hỗ trợ cấu trúc đa cấp - lồng nhau).
-5.  **`brands`**: Thương hiệu sản phẩm.
-6.  **`suppliers`**: Nhà cung cấp sản phẩm.
-7.  **`inventories`**: Quản lý chi tiết vị trí kho và số lượng tồn kho thực tế.
-8.  **`assets`**: Kho quản lý file đa phương tiện chung (ảnh, video, đường dẫn lưu trữ).
-9.  **`product_assets`**: Bảng trung gian liên kết sản phẩm với hình ảnh/video (thiết lập thứ tự hiển thị).
-10. **`imports` / `exports`**: Nhật ký và tệp tin của các phiên import/export dữ liệu.
-11. **`publish_jobs` / `publish_logs`**: Theo dõi tiến trình đăng tải sản phẩm lên các sàn TMĐT.
-12. **`activity_logs`**: Ghi lại mọi thao tác của người dùng trên hệ thống để phục vụ bảo mật và kiểm toán.
-13. **`notifications`**: Hệ thống thông báo trạng thái xử lý tác vụ (ví dụ: hoàn thành import/export).
-14. **`settings`**: Lưu cấu hình hệ thống, cấu hình kết nối API sàn và API AI.
+1.  **`tenants`**: Quản lý các doanh nghiệp/cửa hàng thuê hệ thống (tên, tên miền riêng, ngành hàng chính, cấu hình...).
+2.  **`attributes`**: Định nghĩa thuộc tính động cho từng doanh nghiệp (ví dụ: Màu sắc, Kích cỡ, RAM, OS, Pin...).
+3.  **`users`**: Tài khoản quản trị hệ thống (Super Admin) hoặc tài khoản nhân viên/khách hàng thuộc một doanh nghiệp (`tenant_id`).
+4.  **`products`**: Thông tin chung của sản phẩm thuộc doanh nghiệp (`tenant_id`). Chứa cột `attributes` kiểu dữ liệu `JSON` để lưu trữ các thông số động không đổi giữa các phiên bản sản phẩm (ví dụ: Chất liệu, Xuất xứ, CPU).
+5.  **`product_variants`**: Các phiên bản biến thể của sản phẩm thuộc doanh nghiệp (`tenant_id`). Chứa cột `attribute_values` kiểu dữ liệu `JSON` để lưu các thuộc tính tạo nên biến thể (ví dụ: `{"color": "Đỏ", "size": "M"}`).
+6.  **`categories`**: Danh mục sản phẩm (phân tách theo `tenant_id`, hỗ trợ cấu trúc đa cấp, slug độc nhất theo từng store).
+7.  **`brands`**: Thương hiệu sản phẩm (phân tách theo `tenant_id`).
+8.  **`suppliers`**: Nhà cung cấp sản phẩm (phân tách theo `tenant_id`).
+9.  **`assets`**: Kho quản lý file đa phương tiện chung (phân tách theo `tenant_id`).
+10. **`product_assets`**: Bảng trung gian liên kết sản phẩm với hình ảnh/video.
+11. **`imports` / `exports`**: Nhật ký và tệp tin của các phiên import/export dữ liệu (phân tách theo `tenant_id`).
+12. **`publish_jobs` / `publish_logs`**: Theo dõi tiến trình đăng tải sản phẩm lên các sàn TMĐT (phân tách theo `tenant_id`).
+13. **`activity_logs`**: Ghi lại mọi thao tác của người dùng trên hệ thống.
 
 ---
 
