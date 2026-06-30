@@ -3,6 +3,11 @@ BEGIN;
 
 SET CONSTRAINTS ALL DEFERRED;
 
+-- Data for table: tenants
+INSERT INTO "tenants" ("id", "name", "subdomain", "domain", "logo_url", "phone", "email", "address", "industry_type", "status", "settings", "created_at", "updated_at") VALUES (1, 'ACOS Fashion', 'fashion', 'acos-fashion.vn', NULL, NULL, NULL, NULL, 'fashion', 'active', '{"theme":"light","currency":"VND"}', '2026-06-30 09:16:38', '2026-06-30 09:16:38') ON CONFLICT DO NOTHING;
+INSERT INTO "tenants" ("id", "name", "subdomain", "domain", "logo_url", "phone", "email", "address", "industry_type", "status", "settings", "created_at", "updated_at") VALUES (2, 'ACOS Tech', 'tech', 'acos-tech.vn', NULL, NULL, NULL, NULL, 'electronics', 'active', '{"theme":"dark","currency":"VND"}', '2026-06-30 09:16:38', '2026-06-30 09:16:38') ON CONFLICT DO NOTHING;
+SELECT setval(pg_get_serial_sequence('"tenants"', 'id'), coalesce(max(id), 1)) FROM "tenants";
+
 -- Data for table: users
 INSERT INTO "users" ("id", "tenant_id", "name", "email", "email_verified_at", "password", "remember_token", "created_at", "updated_at") VALUES (1, NULL, 'Admin ACOS System', 'admin@acos.vn', NULL, '$2y$12$UIbLZx.zcbpyVoqVR5Juiesaa6znrX3FvqkbkSRtUmRzr/CWxQyFe', NULL, '2026-06-30 09:16:39', '2026-06-30 09:16:39') ON CONFLICT DO NOTHING;
 INSERT INTO "users" ("id", "tenant_id", "name", "email", "email_verified_at", "password", "remember_token", "created_at", "updated_at") VALUES (2, 1, 'Fashion Manager', 'fashion@acos.vn', NULL, '$2y$12$VC6EIM5.2v6RCw9O7XCC7OpC/FLXEKjxLIoGUMnIUMxbvIJl1dkHO', NULL, '2026-06-30 09:16:39', '2026-06-30 09:16:39') ON CONFLICT DO NOTHING;
