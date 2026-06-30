@@ -244,7 +244,7 @@ export default function MediaPage() {
         <p className="text-xs font-semibold" style={{ color: dragOver ? '#818cf8' : 'rgba(255,255,255,0.5)' }}>
           {dragOver ? 'Thả file vào đây' : 'Kéo & thả ảnh/video hoặc nhấp để chọn'}
         </p>
-        <p className="text-[10px] mt-1.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <p className="text-[20px] mt-1.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
           Định dạng: JPG, PNG, WEBP, MP4, MOV, WEBM (Tối đa 100MB)
         </p>
       </div>

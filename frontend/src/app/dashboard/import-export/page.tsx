@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import api from '@/lib/api';
 import { Import, PaginatedResponse } from '@/types';
 import { formatDate, importStatusConfig } from '@/lib/utils';
-import { 
-  Upload, Download, FileSpreadsheet, Loader2, CheckCircle2, 
+import {
+  Upload, Download, FileSpreadsheet, Loader2, CheckCircle2,
   AlertCircle, RefreshCw, X, ChevronRight, ChevronLeft, ArrowRight,
   Database, AlertTriangle, Table, Sparkles
 } from 'lucide-react';
@@ -33,6 +33,22 @@ export default function ImportExportPage() {
     stock: 'Số lượng tồn kho',
     description: 'Mô tả chi tiết'
   });
+
+  const downloadTemplate = () => {
+    const headers = ['sku', 'name', 'price', 'cost_price', 'stock', 'description', 'barcode', 'seo_title', 'seo_description'];
+    const row = ['PROD-001', 'Áo Thun Cotton Basic', '150000', '90000', '100', 'Áo thun 100% cotton thoáng mát', '8930000001', 'Áo thun cotton', 'Mô tả SEO áo thun'];
+    
+    // Add BOM character so Excel parses Vietnamese Unicode characters correctly
+    const csvContent = "\uFEFF" + [headers.join(','), row.join(',')].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "acos_product_template.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const fetchImports = async () => {
     setLoading(true);
@@ -150,16 +166,16 @@ export default function ImportExportPage() {
           {/* Wizard Container */}
           <div className="glass-card p-6 space-y-6">
             {/* Step Indicators */}
-            <div className="flex items-center justify-between border border-white/[0.03] rounded-lg p-2 bg-white/[0.01] overflow-x-auto gap-2">
+            <div className="flex items-center justify-between rounded-lg p-2 bg-white/[0.01] overflow-x-auto gap-2">
               {[
                 { step: 1, label: 'Tải lên' },
-                { step: 2, label: 'Ánh xạ' },
+                { step: 2, label: 'Tham chiếu' },
                 { step: 3, label: 'Xác thực' },
                 { step: 4, label: 'Xem trước' },
                 { step: 5, label: 'Hoàn thành' }
               ].map((s, idx) => (
                 <div key={s.step} className="flex items-center gap-2 flex-shrink-0">
-                  <span className={`text-[10px] px-2.5 py-1 rounded-md border flex items-center gap-1.5 ${getStepClass(s.step)}`}>
+                  <span className={`text-[10px] px-2.5 py-1 rounded-md  flex items-center gap-1.5 ${getStepClass(s.step)}`}>
                     {wizardStep > s.step ? <CheckCircle2 size={10} /> : <span>0{s.step}</span>}
                     {s.label}
                   </span>
@@ -170,9 +186,9 @@ export default function ImportExportPage() {
 
             {/* Step 1: File Upload */}
             {wizardStep === 1 && (
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center border border-indigo-500/20" style={{ background: 'rgba(99,102,241,0.08)' }}>
+              <div className="space-y-4 pd">
+                <div className="flex items-center gap-3  mt-import-export">
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center " style={{ background: 'rgba(99,102,241,0.08)' }}>
                     <Upload size={14} className="text-indigo-400" />
                   </div>
                   <div>
@@ -208,11 +224,18 @@ export default function ImportExportPage() {
                     </div>
                   ) : (
                     <>
-                      <FileSpreadsheet size={24} className="mx-auto mb-2 opacity-40 text-white" />
+                      <FileSpreadsheet size={24} className="mx-auto mb-2 opacity-40 text-white p-[5px]" />
                       <p className="text-xs font-medium text-white/50">Kéo file vào đây hoặc nhấp để chọn</p>
                       <p className="text-[10px] mt-1.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
                         Các cột bắt buộc: <code className="px-1 py-0.2 rounded bg-white/[0.05] text-indigo-300">sku</code>, <code className="px-1 py-0.2 rounded bg-white/[0.05] text-indigo-300">name</code>, <code className="px-1 py-0.2 rounded bg-white/[0.05] text-indigo-300">price</code>
                       </p>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); downloadTemplate(); }}
+                        className="mt-3 text-[11px] text-indigo-400 hover:text-indigo-300 hover:underline flex items-center gap-1 mx-auto bg-transparent border-none cursor-pointer"
+                      >
+                        <Download size={11} /> Tải file CSV mẫu (.csv)
+                      </button>
                     </>
                   )}
                 </div>

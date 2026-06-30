@@ -15,7 +15,7 @@ function StatCard({ title, value, sub, trend, icon: Icon }: {
   icon: React.ElementType;
 }) {
   return (
-    <div className="glass-card p-5 hover:border-white/[0.1] transition-all group relative overflow-hidden">
+    <div className="glass-card p-5 hover:border-white/[0.1] transition-all group relative overflow-hidden glass-card-dashboard">
       <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-[0.02] group-hover:opacity-[0.05] pointer-events-none transition-opacity" style={{ background: 'radial-gradient(circle, #6366f1, transparent)', filter: 'blur(20px)' }} />
       <div className="flex justify-between items-start">
         <div>
@@ -122,7 +122,7 @@ export default function DashboardPage() {
         {/* ROW 1: Analytics & Quick Actions (Height balanced ~260px) */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
           {/* Left: Line Chart (2/3 width) */}
-          <div className="glass-card p-5 flex flex-col justify-between lg:col-span-2">
+          <div className="glass-card p-5 flex flex-col justify-between lg:col-span-2 glass-card-dashboard">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-semibold text-xs uppercase tracking-wider text-white/50">Sản lượng sản phẩm</h3>

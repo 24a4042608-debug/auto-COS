@@ -1,19 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '@/lib/api';
-import { Category, Brand, Supplier } from '@/types';
+import { Category, Brand, Supplier, Product } from '@/types';
 import { ArrowLeft, Save, Plus, Minus, Loader2, Upload, Image as ImageIcon } from 'lucide-react';
 
-export default function CreateProductPage() {
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default function EditProductPage({ params }: PageProps) {
   const router = useRouter();
+  const { id } = use(params);
+  const [fetching, setFetching] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   
   // Image assets state
@@ -22,7 +27,6 @@ export default function CreateProductPage() {
   const [uploadingPrimary, setUploadingPrimary] = useState(false);
   const [uploadingSub, setUploadingSub] = useState(false);
 
-  const [variants, setVariants] = useState<any[]>([]);
   const [form, setForm] = useState({
     sku: '', barcode: '', name: '',
     short_description: '', description: '',
@@ -38,12 +42,45 @@ export default function CreateProductPage() {
       api.get('/categories'),
       api.get('/brands'),
       api.get('/suppliers'),
-    ]).then(([cats, brds, sups]) => {
+      api.get(`/products/${id}`),
+    ]).then(([cats, brds, sups, prodRes]) => {
       setCategories(cats.data);
       setBrands(brds.data);
       setSuppliers(sups.data);
+
+      const prod: any = prodRes.data;
+      setForm({
+        sku: prod.sku,
+        name: prod.name,
+        barcode: prod.barcode || '',
+        short_description: prod.short_description || '',
+        description: prod.description || '',
+        category_id: prod.category_id?.toString() || '',
+        brand_id: prod.brand_id?.toString() || '',
+        supplier_id: prod.supplier_id?.toString() || '',
+        cost_price: prod.cost_price.toString(),
+        price: prod.price.toString(),
+        sale_price: prod.sale_price?.toString() || '',
+        stock: prod.stock.toString(),
+        min_stock: prod.min_stock.toString(),
+        seo_title: prod.seo_title || '',
+        seo_description: prod.seo_description || '',
+        tags: prod.tags ? prod.tags.join(', ') : '',
+        status: prod.status,
+      });
+
+      // Load existing assets
+      if (prod.assets) {
+        const primary = prod.assets.find((a: any) => a.pivot?.is_primary);
+        const subs = prod.assets.filter((a: any) => !a.pivot?.is_primary);
+        setPrimaryAsset(primary || null);
+        setSubAssets(subs);
+      }
+      setFetching(false);
+    }).catch(() => {
+      router.push('/dashboard/products');
     });
-  }, []);
+  }, [id, router]);
 
   const handlePrimaryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -119,55 +156,43 @@ export default function CreateProductPage() {
     try {
       const payload = {
         ...form,
-        category_id: form.category_id || undefined,
-        brand_id: form.brand_id || undefined,
-        supplier_id: form.supplier_id || undefined,
+        category_id: form.category_id || null,
+        brand_id: form.brand_id || null,
+        supplier_id: form.supplier_id || null,
         tags: form.tags ? form.tags.split(',').map(t => t.trim()) : [],
-        variants: variants.map(v => ({
-          ...v,
-          price: v.price ? parseFloat(v.price) : undefined,
-          cost_price: v.cost_price ? parseFloat(v.cost_price) : undefined,
-          stock: parseInt(v.stock) || 0,
-        })),
+        cost_price: parseFloat(form.cost_price) || 0,
+        price: parseFloat(form.price) || 0,
+        sale_price: form.sale_price ? parseFloat(form.sale_price) : null,
+        stock: parseInt(form.stock) || 0,
+        min_stock: parseInt(form.min_stock) || 0,
         asset_ids: assetIds,
-        primary_asset_id: primaryAsset ? primaryAsset.id : undefined,
+        primary_asset_id: primaryAsset ? primaryAsset.id : null,
       };
-      await api.post('/products', payload);
+      await api.put(`/products/${id}`, payload);
       router.push('/dashboard/products');
     } catch (err: any) {
       if (err.response?.data?.errors) {
         setErrors(err.response.data.errors);
       } else {
-        alert(err.response?.data?.message || 'Có lỗi xảy ra khi tạo sản phẩm.');
+        alert(err.response?.data?.message || 'Có lỗi xảy ra khi cập nhật sản phẩm.');
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const addVariant = () => {
-    setVariants([...variants, { sku: '', attributes: { 'Màu sắc': '', 'Kích thước': '' }, price: '', cost_price: '', stock: '0' }]);
-  };
-
-  const removeVariant = (i: number) => {
-    setVariants(variants.filter((_, idx) => idx !== i));
-  };
-
-  const updateVariant = (i: number, field: string, value: string) => {
-    const updated = [...variants];
-    if (field.startsWith('attr.')) {
-      const key = field.replace('attr.', '');
-      updated[i] = { ...updated[i], attributes: { ...updated[i].attributes, [key]: value } };
-    } else {
-      updated[i] = { ...updated[i], [field]: value };
-    }
-    setVariants(updated);
-  };
-
   const inputClass = 'input-field';
   const labelClass = 'block text-sm font-medium mb-1.5';
   const labelStyle = { color: 'rgba(255,255,255,0.7)' };
   const sectionClass = 'glass-card p-6 space-y-4';
+
+  if (fetching) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 size={32} className="animate-spin text-indigo-500" />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-5 pb-32">
@@ -176,8 +201,8 @@ export default function CreateProductPage() {
           <ArrowLeft size={16} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-white">Thêm sản phẩm mới</h1>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>Điền thông tin để tạo sản phẩm mới trong hệ thống</p>
+          <h1 className="text-2xl font-bold text-white">Chỉnh sửa sản phẩm</h1>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>Cập nhật thông tin sản phẩm #{id}</p>
         </div>
       </div>
 
@@ -221,14 +246,14 @@ export default function CreateProductPage() {
           </div>
         </div>
 
-        {/* Product Images (New Section) */}
+        {/* Product Images */}
         <div className={sectionClass}>
           <h2 className="text-base font-semibold text-white border-b border-white/[0.04] pb-2">Hình ảnh sản phẩm</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Primary Image */}
             <div className="md:col-span-1 space-y-2">
               <label className={labelClass} style={labelStyle}>Ảnh chính *</label>
-              <div className="flex flex-col items-center justify-center upload-zone p-4 min-h-[160px] relative">
+              <div className="flex flex-col items-center justify-center border border-dashed border-white/10 rounded-lg p-4 bg-white/[0.01] min-h-[160px] relative">
                 {primaryAsset ? (
                   <div className="relative group w-full h-36 rounded-lg overflow-hidden">
                     <img src={primaryAsset.url} alt="Primary Asset" className="w-full h-full object-cover bg-[#0d0d14]" />
@@ -364,52 +389,6 @@ export default function CreateProductPage() {
               <textarea className={inputClass} value={form.seo_description} onChange={e => setForm({...form, seo_description: e.target.value})} placeholder="Mô tả tối ưu cho công cụ tìm kiếm..." rows={3} />
             </div>
           </div>
-        </div>
-
-        {/* Variants */}
-        <div className={sectionClass}>
-          <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
-            <h2 className="text-base font-semibold text-white">Biến thể sản phẩm</h2>
-            <button type="button" onClick={addVariant} className="btn-ghost text-xs">
-              <Plus size={13} /> Thêm biến thể
-            </button>
-          </div>
-          {variants.length === 0 ? (
-            <p className="text-sm text-center py-4" style={{ color: 'rgba(255,255,255,0.35)' }}>
-              Không có biến thể – sản phẩm đơn. Nhấn "+ Thêm biến thể" nếu có Size/Màu.
-            </p>
-          ) : (
-            <div className="space-y-4">
-              {variants.map((v, i) => (
-                <div key={i} className="p-4 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-medium text-white">Biến thể #{i + 1}</span>
-                    <button type="button" onClick={() => removeVariant(i)} className="btn-ghost text-xs" style={{ color: '#f87171', border: '1px solid rgba(239,68,68,0.2)' }}>
-                      <Minus size={12} /> Xóa
-                    </button>
-                  </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div>
-                      <label className={labelClass} style={labelStyle}>SKU</label>
-                      <input className={inputClass} value={v.sku} onChange={e => updateVariant(i, 'sku', e.target.value)} placeholder="SP-001-RED-M" />
-                    </div>
-                    <div>
-                      <label className={labelClass} style={labelStyle}>Màu sắc</label>
-                      <input className={inputClass} value={v.attributes['Màu sắc']} onChange={e => updateVariant(i, 'attr.Màu sắc', e.target.value)} placeholder="Đỏ, Xanh..." />
-                    </div>
-                    <div>
-                      <label className={labelClass} style={labelStyle}>Kích thước</label>
-                      <input className={inputClass} value={v.attributes['Kích thước']} onChange={e => updateVariant(i, 'attr.Kích thước', e.target.value)} placeholder="S, M, L, XL..." />
-                    </div>
-                    <div>
-                      <label className={labelClass} style={labelStyle}>Tồn kho</label>
-                      <input type="number" className={inputClass} value={v.stock} onChange={e => updateVariant(i, 'stock', e.target.value)} min="0" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Status Selector - Placed above the save button */}

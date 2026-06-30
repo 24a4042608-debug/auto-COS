@@ -130,7 +130,7 @@ export default function PublisherPage() {
         {/* Left: Queue List (2/3 width) */}
         <div className="lg:col-span-2 space-y-4">
           {/* Controls */}
-          <div className="glass-card p-4 flex flex-wrap gap-3 items-center">
+          <div className="glass-card p-4 flex flex-wrap gap-3 items-center border-none">
             <div className="relative flex-1 min-w-[200px]">
               <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
               <input 
@@ -168,7 +168,7 @@ export default function PublisherPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className="py-3 px-4 text-xs font-medium border-b-2 transition-all cursor-pointer bg-transparent"
+                  className="flex-1 py-3 text-xs font-medium border-b-2 transition-all cursor-pointer bg-transparent text-center"
                   style={{
                     borderColor: activeTab === tab.id ? '#6366f1' : 'transparent',
                     color: activeTab === tab.id ? 'white' : 'rgba(255,255,255,0.4)'

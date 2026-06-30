@@ -40,6 +40,7 @@ trait BelongsToTenant
             return auth()->user()->tenant_id;
         }
 
-        return null;
+        // 3. Single-tenant fallback — always use tenant 1
+        return 1;
     }
 }

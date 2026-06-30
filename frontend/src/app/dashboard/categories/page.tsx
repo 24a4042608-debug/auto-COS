@@ -37,6 +37,17 @@ export default function CategoriesPage() {
     fetchCategories();
   };
 
+  const getFlattenedCategories = (cats: Category[], depth = 0): { id: number; name: string }[] => {
+    let list: { id: number; name: string }[] = [];
+    cats.forEach(c => {
+      list.push({ id: c.id, name: '  '.repeat(depth) + (depth > 0 ? '└─ ' : '') + c.name });
+      if (c.children && c.children.length > 0) {
+        list = [...list, ...getFlattenedCategories(c.children, depth + 1)];
+      }
+    });
+    return list;
+  };
+
   const renderCategory = (cat: Category, depth = 0) => (
     <div key={cat.id}>
       <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
@@ -76,7 +87,7 @@ export default function CategoriesPage() {
             <label className="block text-sm font-medium mb-1.5" style={{ color: 'rgba(255,255,255,0.7)' }}>Danh mục cha (tùy chọn)</label>
             <select className="input-field" value={form.parent_id} onChange={e => setForm({ ...form, parent_id: e.target.value })}>
               <option value="">— Danh mục gốc —</option>
-              {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              {getFlattenedCategories(categories).map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
           <div className="flex justify-end gap-2">

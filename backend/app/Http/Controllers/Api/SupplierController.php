@@ -10,7 +10,7 @@ class SupplierController extends Controller
 {
     public function index()
     {
-        return response()->json(Supplier::where('is_active', true)->orderBy('name')->get());
+        return response()->json(Supplier::orderBy('name')->get());
     }
 
     public function store(Request $request)

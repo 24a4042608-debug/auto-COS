@@ -54,6 +54,7 @@ Route::group([], function () {
     Route::get('brands', [BrandController::class, 'index']);
     Route::post('brands', [BrandController::class, 'store']);
     Route::put('brands/{brand}', [BrandController::class, 'update']);
+    Route::post('brands/{brand}/update', [BrandController::class, 'update']); // FormData multipart support
     Route::delete('brands/{brand}', [BrandController::class, 'destroy']);
 
     // Suppliers

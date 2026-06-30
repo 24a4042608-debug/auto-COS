@@ -11,7 +11,7 @@ class BrandController extends Controller
 {
     public function index()
     {
-        return response()->json(Brand::where('is_active', true)->orderBy('name')->get());
+        return response()->json(Brand::orderBy('name')->get());
     }
 
     public function store(Request $request)
@@ -19,8 +19,17 @@ class BrandController extends Controller
         $data = $request->validate([
             'name'        => 'required|string|max:255|unique:brands',
             'description' => 'nullable|string',
+            'logo'        => 'nullable|string',
         ]);
         $data['slug'] = Str::slug($data['name']);
+
+        // Handle direct file upload for logo
+        if ($request->hasFile('logo_file')) {
+            $mediaController = new MediaController();
+            $asset = $mediaController->storeFile($request->file('logo_file'), 'brands');
+            $data['logo'] = $asset->url;
+        }
+
         return response()->json(Brand::create($data), 201);
     }
 
@@ -30,10 +39,19 @@ class BrandController extends Controller
             'name'        => 'sometimes|string|max:255|unique:brands,name,' . $brand->id,
             'description' => 'nullable|string',
             'is_active'   => 'nullable|boolean',
+            'logo'        => 'nullable|string',
         ]);
         if (isset($data['name'])) {
             $data['slug'] = Str::slug($data['name']);
         }
+
+        // Handle direct file upload for logo
+        if ($request->hasFile('logo_file')) {
+            $mediaController = new MediaController();
+            $asset = $mediaController->storeFile($request->file('logo_file'), 'brands');
+            $data['logo'] = $asset->url;
+        }
+
         $brand->update($data);
         return response()->json($brand);
     }

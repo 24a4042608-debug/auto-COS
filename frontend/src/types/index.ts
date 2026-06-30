@@ -17,6 +17,9 @@ export interface Brand {
   id: number;
   name: string;
   slug: string;
+  description?: string;
+  logo?: string;
+  is_active?: boolean;
 }
 
 export interface Supplier {
@@ -25,6 +28,9 @@ export interface Supplier {
   code: string;
   email: string;
   phone: string;
+  contact_person?: string;
+  address?: string;
+  notes?: string;
 }
 
 export interface ProductVariant {

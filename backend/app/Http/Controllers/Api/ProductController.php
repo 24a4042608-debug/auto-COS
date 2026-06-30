@@ -63,7 +63,14 @@ class ProductController extends Controller
             'variants.*.attributes' => 'required_with:variants|array',
             'variants.*.price'      => 'nullable|numeric|min:0',
             'variants.*.stock'      => 'nullable|integer|min:0',
+            'asset_ids'         => 'nullable|array',
+            'asset_ids.*'       => 'exists:assets,id',
+            'primary_asset_id'  => 'nullable|exists:assets,id',
         ]);
+
+        $assetIds = $data['asset_ids'] ?? [];
+        $primaryAssetId = $data['primary_asset_id'] ?? ($assetIds[0] ?? null);
+        unset($data['asset_ids'], $data['primary_asset_id']);
 
         $data['slug']         = Str::slug($data['name']) . '-' . Str::random(6);
         $data['has_variants'] = ! empty($data['variants']);
@@ -77,7 +84,18 @@ class ProductController extends Controller
             $product->variants()->create($variant);
         }
 
-        return response()->json($product->load('variants'), 201);
+        if (!empty($assetIds)) {
+            $syncData = [];
+            foreach ($assetIds as $index => $id) {
+                $syncData[$id] = [
+                    'sort_order' => $index,
+                    'is_primary' => ($id == $primaryAssetId),
+                ];
+            }
+            $product->assets()->sync($syncData);
+        }
+
+        return response()->json($product->load(['variants', 'assets']), 201);
     }
 
     public function show(Product $product)
@@ -107,7 +125,14 @@ class ProductController extends Controller
             'seo_description' => 'nullable|string',
             'tags'            => 'nullable|array',
             'status'          => 'nullable|in:draft,active,inactive',
+            'asset_ids'         => 'nullable|array',
+            'asset_ids.*'       => 'exists:assets,id',
+            'primary_asset_id'  => 'nullable|exists:assets,id',
         ]);
+
+        $assetIds = $data['asset_ids'] ?? null;
+        $primaryAssetId = $data['primary_asset_id'] ?? null;
+        unset($data['asset_ids'], $data['primary_asset_id']);
 
         if (isset($data['name'])) {
             $data['slug'] = Str::slug($data['name']) . '-' . Str::random(6);
@@ -115,7 +140,19 @@ class ProductController extends Controller
 
         $product->update($data);
 
-        return response()->json($product->fresh(['category', 'brand', 'supplier', 'variants']));
+        if ($assetIds !== null) {
+            $syncData = [];
+            $effectivePrimaryId = $primaryAssetId ?? ($assetIds[0] ?? null);
+            foreach ($assetIds as $index => $id) {
+                $syncData[$id] = [
+                    'sort_order' => $index,
+                    'is_primary' => ($id == $effectivePrimaryId),
+                ];
+            }
+            $product->assets()->sync($syncData);
+        }
+
+        return response()->json($product->fresh(['category', 'brand', 'supplier', 'variants', 'assets']));
     }
 
     public function destroy(Product $product)

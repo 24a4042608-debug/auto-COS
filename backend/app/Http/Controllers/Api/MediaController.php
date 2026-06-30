@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Asset;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use ZipArchive;
 
@@ -35,12 +34,14 @@ class MediaController extends Controller
     {
         $request->validate([
             'files'   => 'required|array',
-            'files.*' => 'file|mimes:jpg,jpeg,png,webp,mp4,mov,webm|max:102400',
+            'files.*' => 'file|mimes:jpg,jpeg,png,webp,gif,mp4,mov,webm|max:102400',
+            'model'   => 'nullable|string|in:products,brands,suppliers,categories,media',
         ]);
 
+        $model    = $request->input('model', 'media');
         $uploaded = [];
         foreach ($request->file('files') as $file) {
-            $uploaded[] = $this->storeFile($file);
+            $uploaded[] = $this->storeFile($file, $model);
         }
 
         return response()->json($uploaded, 201);
@@ -50,70 +51,78 @@ class MediaController extends Controller
     {
         $request->validate(['zip' => 'required|file|mimes:zip|max:524288']);
 
-        $zipFile = $request->file('zip');
-        $zipPath = $zipFile->store('tmp_zips');
-        $fullZipPath = Storage::path($zipPath);
+        $zipFile    = $request->file('zip');
+        $tmpZipPath = sys_get_temp_dir() . '/' . Str::uuid() . '.zip';
+        $zipFile->move(sys_get_temp_dir(), basename($tmpZipPath));
 
         $zip = new ZipArchive();
-        if ($zip->open($fullZipPath) !== true) {
+        if ($zip->open($tmpZipPath) !== true) {
             return response()->json(['message' => 'Không thể mở file ZIP.'], 422);
         }
 
-        $uploaded = [];
-        $allowedMimes = ['jpg', 'jpeg', 'png', 'webp', 'mp4', 'mov', 'webm'];
+        $uploadDir    = public_path('uploads/media');
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $uploaded     = [];
+        $allowedMimes = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4', 'mov', 'webm'];
+        $mimeMap      = [
+            'jpg'  => 'image/jpeg', 'jpeg' => 'image/jpeg',
+            'png'  => 'image/png',  'webp' => 'image/webp',
+            'gif'  => 'image/gif',  'mp4'  => 'video/mp4',
+            'mov'  => 'video/quicktime', 'webm' => 'video/webm',
+        ];
 
         for ($i = 0; $i < $zip->numFiles; $i++) {
-            $name      = $zip->getNameIndex($i);
-            $ext       = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+            $name = $zip->getNameIndex($i);
+            $ext  = strtolower(pathinfo($name, PATHINFO_EXTENSION));
 
-            if (! in_array($ext, $allowedMimes) || str_ends_with($name, '/')) {
+            if (!in_array($ext, $allowedMimes) || str_ends_with($name, '/')) {
                 continue;
             }
 
-            $content   = $zip->getFromIndex($i);
-            $filename  = Str::uuid() . '.' . $ext;
-            $path      = 'media/' . $filename;
-            Storage::put($path, $content);
+            $filename = Str::uuid() . '.' . $ext;
+            $destPath = $uploadDir . '/' . $filename;
+            file_put_contents($destPath, $zip->getFromIndex($i));
 
-            $type     = in_array($ext, ['mp4', 'mov', 'webm']) ? 'video' : 'image';
-            $mimeMap  = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'webp' => 'image/webp', 'mp4' => 'video/mp4', 'mov' => 'video/quicktime', 'webm' => 'video/webm'];
+            $type = in_array($ext, ['mp4', 'mov', 'webm']) ? 'video' : 'image';
+            $path = 'uploads/media/' . $filename;
+            $url  = config('app.url') . '/' . $path;
 
             $asset = Asset::create([
                 'filename'      => $filename,
                 'original_name' => basename($name),
-                'disk'          => 'local',
+                'disk'          => 'local_public',
                 'path'          => $path,
-                'url'           => Storage::url($path),
+                'url'           => $url,
                 'mime_type'     => $mimeMap[$ext] ?? 'application/octet-stream',
                 'type'          => $type,
-                'size'          => strlen($content),
+                'size'          => filesize($destPath),
             ]);
 
             $uploaded[] = $asset;
         }
 
         $zip->close();
-        Storage::delete($zipPath);
+        @unlink($tmpZipPath);
 
         return response()->json($uploaded, 201);
     }
 
     public function autoMap()
     {
-        // Find all assets that are not yet mapped to any product
         $unmappedAssets = Asset::doesntHave('products')->get();
         $mapped         = 0;
 
         foreach ($unmappedAssets as $asset) {
-            // Extract possible SKU from filename (e.g. "SP001_thumbnail.jpg" -> "SP001")
-            $name    = pathinfo($asset->original_name, PATHINFO_FILENAME);
-            // Try to match leading alphanumeric SKU before first underscore, dash, or space
+            $name = pathinfo($asset->original_name, PATHINFO_FILENAME);
             if (preg_match('/^([A-Za-z0-9\-]+?)(?:[_\s\.]|$)/', $name, $matches)) {
                 $sku     = $matches[1];
                 $product = Product::where('sku', $sku)->first();
 
                 if ($product) {
-                    $isPrimary = ! $product->assets()->exists();
+                    $isPrimary = !$product->assets()->exists();
                     $product->assets()->syncWithoutDetaching([
                         $asset->id => [
                             'sort_order' => $product->assets()->count(),
@@ -130,35 +139,56 @@ class MediaController extends Controller
 
     public function destroy(Asset $asset)
     {
-        Storage::delete($asset->path);
+        // Delete the physical file
+        $fullPath = public_path($asset->path);
+        if (file_exists($fullPath)) {
+            @unlink($fullPath);
+        }
         $asset->delete();
 
         return response()->json(['message' => 'Đã xóa tài nguyên.']);
     }
 
-    private function storeFile($file): Asset
+    /**
+     * Store a single uploaded file to public/uploads/{model}/
+     * @param  \Illuminate\Http\UploadedFile $file
+     * @param  string $model  e.g. 'products', 'brands', 'media'
+     */
+    public function storeFile($file, string $model = 'media'): Asset
     {
-        $ext      = $file->getClientOriginalExtension();
+        $ext      = strtolower($file->getClientOriginalExtension());
         $filename = Str::uuid() . '.' . $ext;
-        $path     = 'media/' . $filename;
-        $file->storeAs('media', $filename);
 
-        $type = in_array(strtolower($ext), ['mp4', 'mov', 'webm']) ? 'video' : 'image';
+        // Capture these BEFORE move() — move() deletes the temp file
+        $originalName = $file->getClientOriginalName();
+        $mimeType     = $file->getMimeType() ?? 'application/octet-stream';
+        $fileSize     = $file->getSize();
+
+        // Create directory: public/uploads/{model}/
+        $uploadDir = public_path('uploads/' . $model);
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        $file->move($uploadDir, $filename);
+
+        $type = in_array($ext, ['mp4', 'mov', 'webm']) ? 'video' : 'image';
+        $path = 'uploads/' . $model . '/' . $filename;
+        $url  = config('app.url') . '/' . $path;
 
         $width = $height = null;
         if ($type === 'image') {
-            [$width, $height] = @getimagesize($file->getRealPath()) ?: [null, null];
+            [$width, $height] = @getimagesize(public_path($path)) ?: [null, null];
         }
 
         return Asset::create([
             'filename'      => $filename,
-            'original_name' => $file->getClientOriginalName(),
-            'disk'          => 'local',
+            'original_name' => $originalName,
+            'disk'          => 'local_public',
             'path'          => $path,
-            'url'           => Storage::url($path),
-            'mime_type'     => $file->getMimeType(),
+            'url'           => $url,
+            'mime_type'     => $mimeType,
             'type'          => $type,
-            'size'          => $file->getSize(),
+            'size'          => $fileSize,
             'width'         => $width,
             'height'        => $height,
         ]);
