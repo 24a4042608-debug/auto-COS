@@ -120,80 +120,66 @@ sequenceDiagram
 
 ---
 
-## 5. Thiết kế chi tiết các Module
+## 5. Thiết kế chi tiết các Module (Kèm Đặc tả UI/UX)
 
 ### 5.1. Product Management (Quản lý sản phẩm)
 Module quản lý toàn bộ thông tin sản phẩm từ thông tin cơ bản, thuộc tính SEO, đến các phiên bản biến thể, hỗ trợ đa doanh nghiệp và đa ngành hàng.
-
-*   **Thông tin cốt lõi (Core Fields):**
-    *   *Phân tách dữ liệu:* Thuộc về một Cửa hàng/Doanh nghiệp cụ thể (`tenant_id`).
-    *   *Định danh:* SKU (mã định danh duy nhất trong mỗi store), Barcode.
-    *   *Thông tin cơ bản:* Tên sản phẩm, Thương hiệu (Brand), Danh mục (Category), Nhà cung cấp (Supplier).
-    *   *Giá cả:* Giá vốn (Cost Price), Giá bán lẻ (Price), Giá khuyến mãi (Sale Price).
-    *   *Tồn kho:* Số lượng tồn kho (Stock).
-    *   *Thông số kỹ thuật động:* Lưu trữ thông tin đặc thù của từng ngành hàng dưới dạng `JSON` (ví dụ: Chất liệu, Xuất xứ với thời trang; CPU, Pin với điện thoại) được định nghĩa linh hoạt trong bảng `attributes`.
-    *   *Tối ưu hóa tìm kiếm (SEO):* Slug (độc nhất theo store), Tiêu đề SEO (SEO Title), Mô tả SEO (SEO Description).
-    *   *Phân loại & tìm kiếm nhanh:* Tags, Mô tả ngắn, Mô tả chi tiết.
-*   **Quản lý biến thể (Product Variants):**
-    *   Hỗ trợ sản phẩm có nhiều thuộc tính biến thể (ví dụ: Kích thước, Màu sắc đối với quần áo; Dung lượng, Màu sắc đối với điện thoại).
-    *   Lưu trữ các giá trị thuộc tính biến thể dưới dạng `JSON` (`attribute_values`).
-    *   Mỗi biến thể có SKU riêng (độc nhất theo store), Barcode riêng, Giá bán riêng, và số lượng tồn kho riêng biệt.
+*   **Đặc tả Giao diện (UI/UX):**
+    *   **Bảng dữ liệu hiện đại (Modern Data Table):** Hỗ trợ Tìm kiếm nhanh, Bộ lọc nâng cao (Filters), Ẩn/Hiện cột (Column Visibility), Sắp xếp (Sort), Phân trang (Pagination) và các Hành động hàng loạt (Bulk Actions).
+    *   **Drawer Chi tiết Sản phẩm (Product Detail Drawer):** Trượt ra từ cạnh phải khi click vào sản phẩm, hiển thị chi tiết mà không làm mất bối cảnh trang chính.
+    *   **Thư viện ảnh sản phẩm (Product Images Gallery):** Giao diện lưới hiển thị hình ảnh sản phẩm mượt mà, hỗ trợ sắp xếp thứ tự hiển thị bằng kéo thả.
+    *   **Khu vực Biến thể (Variants Section):** Quản lý danh sách biến thể dưới dạng lưới thu gọn, hiển thị rõ ràng sự khác biệt thuộc tính (ví dụ: Màu sắc, Kích cỡ).
+    *   **Khu vực SEO & Tồn kho:** Thiết kế tối giản giúp dễ dàng cập nhật thông số SEO (Slug, SEO Title, SEO Description) và theo dõi mức độ tồn kho an toàn (Min Stock).
 
 ### 5.2. Media Center (Trung tâm lưu trữ)
-Hệ thống quản lý tệp tin đa phương tiện được thiết kế tách biệt với sản phẩm để tối ưu khả năng tái sử dụng hình ảnh/video.
-
-*   **Chức năng chính:**
-    *   Hỗ trợ tải lên nhiều file cùng lúc, tải lên cả thư mục hoặc giải nén từ file `.zip`.
-    *   Xem trước (Preview) ảnh/video trực quan.
-    *   Đổi tên, xóa tệp, tải xuống (Download) và gắn thẻ tag để phân loại.
-    *   Hỗ trợ tính năng ghi đè (Replace) file cũ nhưng giữ nguyên liên kết với sản phẩm.
-*   **Định dạng hỗ trợ:**
-    *   *Hình ảnh:* `.jpg`, `.jpeg`, `.png`, `.webp`.
-    *   *Video:* `.mp4`, `.mov`, `.webm`.
+Hệ thống quản lý tệp tin đa phương tiện được thiết kế tách biệt để tối ưu khả năng tái sử dụng hình ảnh/video.
+*   **Đặc tả Giao diện (UI/UX):**
+    *   **Lưới ảnh kiểu Pinterest (Pinterest-like Grid):** Hiển thị trực quan các tệp tin đa phương tiện với kích thước tối ưu, hỗ trợ lazy loading để cuộn mượt mà.
+    *   **Hộp Kéo thả Tệp tin (Drag & Drop Upload):** Khu vực tải lên trực quan, hỗ trợ kéo thả nhiều file hoặc cả thư mục (Folder Upload).
+    *   **Thanh Tiến trình (Progress Bar):** Hiển thị chi tiết tiến độ tải lên của từng tệp tin theo thời gian thực.
+    *   **Hệ thống Thẻ Tag & Tìm kiếm:** Cho phép lọc nhanh ảnh/video bằng thanh tìm kiếm thông minh hoặc theo các thẻ tag phân loại.
+    *   **Modal Xem trước (Preview Modal):** Hỗ trợ xem trước ảnh chất lượng cao và trình phát video (video player) trực tiếp trên trang.
+    *   **Bảng Thông tin Tệp (Asset Info Panel):** Drawer bên phải hiển thị chi tiết siêu dữ liệu (Metadata: kích thước, định dạng, dung lượng, ngày tạo) và danh sách sản phẩm đang liên kết với file này.
 
 ### 5.3. Import Engine
-Hỗ trợ xử lý dữ liệu đầu vào thông qua các tệp tin bảng tính.
-*   **Định dạng hỗ trợ ở MVP:** Excel (`.xlsx`), CSV (`.csv`).
-*   **Quy trình xử lý:**
-    1.  **Tải lên:** User tải file lên giao diện.
-    2.  **Đọc cấu trúc:** Hệ thống phân tích các cột và ánh xạ với các trường trong Database.
-    3.  **Kiểm tra lỗi (Validation):** Kiểm tra trùng lặp SKU, định dạng số, các trường bắt buộc.
-    4.  **Hàng đợi (Queue):** Xử lý ngầm qua Redis để tránh nghẽn hệ thống khi import hàng ngàn sản phẩm.
-    5.  **Báo cáo:** Trả về file Excel kết quả chứa thông tin chi tiết các dòng bị lỗi (nếu có).
+Hỗ trợ xử lý dữ liệu đầu vào thông qua các tệp tin bảng tính Excel/CSV.
+*   **Đặc tả Giao diện (UI/UX) - Import Wizard:**
+    *   **Quy trình 5 bước (5-Step Wizard):**
+        1.  *Bước 1 - Tải lên (Upload):* Kéo thả file Excel/CSV mẫu lên hệ thống.
+        2.  *Bước 2 - Ánh xạ cột (Column Mapping):* Giao diện khớp cột trong file với các trường dữ liệu trong Database hệ thống.
+        3.  *Bước 3 - Xác thực dữ liệu (Validation):* Hệ thống kiểm tra lỗi logic và hiển thị lỗi trực tiếp trên dòng (Inline Validation Errors) để người dùng dễ nhận biết.
+        4.  *Bước 4 - Xem trước (Preview):* Hiển thị bảng xem trước dữ liệu sạch trước khi import chính thức.
+        5.  *Bước 5 - Hoàn thành (Success):* Thông báo thành công và cập nhật số lượng dòng đã xử lý.
 
 ### 5.4. Publisher Framework (Khung đăng tải)
-Thiết kế theo **Provider Pattern** để dễ dàng mở rộng tích hợp các sàn TMĐT khác nhau trong tương lai mà không làm ảnh hưởng đến logic cốt lõi của hệ thống.
-
-*   **Trạng thái hàng đợi đăng tải (Queue Status):**
-    *   `Waiting`: Đang chờ đến lượt xử lý.
-    *   `Processing`: Đang đồng bộ dữ liệu lên sàn qua API.
-    *   `Success`: Đăng tải thành công, lưu lại Link sản phẩm trên sàn.
-    *   `Failed`: Đăng tải thất bại, lưu lại chi tiết mã lỗi từ sàn để người dùng xử lý.
+Thiết kế theo **Provider Pattern** để dễ dàng kết nối đa kênh bán hàng (Shopee, TikTok Shop, Lazada,...).
+*   **Đặc tả Giao diện (UI/UX):**
+    *   **Bảng điều khiển hàng đợi (Queue Dashboard):** Giao diện dạng thẻ (Card) hoặc bảng phân loại Kanban thể hiện các trạng thái: `Waiting` (Chờ xử lý), `Processing` (Đang đồng bộ), `Success` (Thành công), `Failed` (Thất bại) kèm nút `Retry` (Thử lại) nhanh đối với các tác vụ lỗi.
+    *   **Trục thời gian xử lý (Job Timeline):** Mỗi tác vụ đăng tải có một timeline chi tiết thể hiện thời điểm gửi đi, phản hồi từ sàn, và kết quả cuối cùng giúp dễ dàng debug.
 
 ---
 
 ## 6. Thiết kế tính năng tương lai (Future Specs)
 
-### 6.1. AI Content Engine (Dịch vụ AI độc lập)
-Để tối ưu hiệu năng, dịch vụ AI được xây dựng thành một service riêng biệt tương tác qua API.
+### 6.1. Trợ lý AI (AI Integration - Định hướng tương lai)
+*Không triển khai code xử lý AI ở giai đoạn này. Hệ thống chỉ thiết kế sẵn các thẻ giao diện giữ chỗ (Placeholder Cards) trực quan và hiện đại:*
+*   **AI Content Engine Card:** Thiết kế thẻ hiển thị trạng thái `Coming Soon` (Sắp ra mắt) - Tự động viết lại tiêu đề, mô tả sản phẩm chuẩn SEO bằng LLM.
+*   **AI SEO Optimizer Card:** Thẻ hiển thị trạng thái `Coming Soon` - Phân tích mật độ từ khóa và tối ưu hóa SEO tự động cho đa kênh.
+*   **AI Analytics Card:** Thẻ hiển thị trạng thái `Coming Soon` - Gợi ý giá bán tối ưu và dự báo xu hướng tồn kho dựa trên học máy.
 
-*   **Nhiệm vụ chính:**
-    *   Tự động cào (crawl) thông tin sản phẩm từ các đối thủ cạnh tranh trên thị trường.
-    *   Phân tích mật độ từ khóa và xu hướng tìm kiếm để tối ưu SEO.
-    *   Tự động viết lại Tiêu đề (Title), Mô tả sản phẩm (Description) hấp dẫn, không trùng lặp để tránh quét bản quyền của sàn.
-    *   Tự động gắn thẻ tag phù hợp.
-    *   Xuất bản file Excel mẫu chuẩn hóa để sẵn sàng import ngược lại vào hệ thống Web.
-
-### 6.2. Telegram Control Center
-Cho phép người quản lý vận hành và ra lệnh cho hệ thống một cách nhanh chóng qua ứng dụng nhắn tin Telegram.
-
-| Lệnh | Ý nghĩa | Ví dụ sử dụng |
-| :--- | :--- | :--- |
-| `/report` | Xem nhanh báo cáo tồn kho, sản phẩm mới trong ngày | `/report today` |
-| `/publish` | Duyệt và đăng tải danh sách sản phẩm đã chuẩn bị lên sàn | `/publish batch_123` |
-| `/crawl [keyword/url]` | Yêu cầu AI quét thông tin sản phẩm theo từ khóa hoặc đường dẫn | `/crawl nike air max` |
-| `/jobs` | Kiểm tra trạng thái các tiến trình AI đang chạy ngầm | `/jobs status` |
-| `/approve [job_id]` | Xác nhận phê duyệt nội dung AI đã sinh để đưa vào kho sản phẩm | `/approve job_99` |
+### 6.2. Tích hợp Telegram (Telegram Integration - Định hướng tương lai)
+Trang cấu hình bot Telegram hỗ trợ người vận hành duyệt nhanh tác vụ qua điện thoại.
+*   **Đặc tả Giao diện cấu hình (Settings Page):**
+    *   *Trạng thái kết nối:* Thẻ hiển thị trạng thái hoạt động (Status) kèm badge `Coming Soon`.
+    *   *Trường nhập liệu:* Bot Token (Mã bảo mật của Bot), Chat ID (ID nhóm nhận tin nhắn).
+    *   *Nút hành động:* Kiểm tra kết nối (Test Connection) - Gửi tin nhắn thử nghiệm tới nhóm Telegram.
+    *   *Lịch tự động (Automation Schedule):* Cấu hình thời gian tự động gửi báo cáo vận hành.
+*   **Hệ thống Lệnh điều khiển tương lai (Telegram Bot Commands):**
+    *   `/report`: Xem nhanh báo cáo tồn kho, sản phẩm mới trong ngày (ví dụ: `/report today`).
+    *   `/publish`: Duyệt và đăng tải danh sách sản phẩm đã chuẩn bị lên sàn (ví dụ: `/publish batch_123`).
+    *   `/crawl [keyword/url]`: Yêu cầu AI quét thông tin sản phẩm theo từ khóa/link.
+    *   `/jobs`: Kiểm tra trạng thái các tiến trình đang chạy ngầm.
+    *   `/approve [job_id]`: Phê duyệt nội dung do AI đề xuất đưa vào kho chính.
 
 ---
 
@@ -233,7 +219,42 @@ Hệ thống sử dụng hệ quản trị cơ sở dữ liệu **PostgreSQL/MyS
 
 ---
 
-## 8. Công nghệ đề xuất
+## 8. Định hướng Thiết kế UI/UX (UI/UX Design Guidelines)
+
+Hệ thống hướng tới trải nghiệm người dùng cao cấp, nhanh chóng và mượt mà tương tự các nền tảng công nghệ hàng đầu như Vercel, Linear, Stripe và Supabase.
+
+### 8.1. Phong cách thiết kế tổng thể (Overall Style)
+*   **Minimalism & Premium:** Thiết kế tối giản, hiện đại, loại bỏ các chi tiết thừa thãi của các mẫu admin truyền thống. Sử dụng các thẻ Card sạch sẽ, đổ bóng mềm (soft shadows) và góc bo tròn từ `12px` đến `16px`.
+*   **Không gian hiển thị (Whitespace):** Khoảng trống hợp lý giúp giao diện thoáng đãng, dễ đọc và tập trung vào các chỉ số vận hành quan trọng.
+*   **Chế độ hiển thị (Theme):** Hỗ trợ hoàn hảo cả chế độ Sáng (Light Mode) và Tối (Dark Mode - sử dụng màu nền tối sâu đặc trưng `#0B0F17`).
+*   **Hiệu ứng & Chuyển động (Animations):** Sử dụng các hiệu ứng hover mượt mà, vi chuyển động (micro-interactions) và trạng thái tải giả lập (Skeleton Loading) để mang lại cảm giác phản hồi tức thì.
+
+### 8.2. Hệ màu sắc & Typography
+*   **Màu chủ đạo (Primary):** Xanh dương / Indigo hiện đại, tạo cảm giác chuyên nghiệp và tin cậy.
+*   **Màu nhấn (Accent):** Tím Pastel biểu thị cho các tính năng liên quan đến AI và tự động hóa.
+*   **Màu trạng thái:** Xanh lá (Thành công/Hoạt động), Cam (Cảnh báo/Đang xử lý), Đỏ (Lỗi/Nguy hiểm).
+*   **Typography:** Sử dụng phông chữ không chân hiện đại (Sans-serif) như *Inter*, *Geist*, hoặc *SF Pro*. Tiêu đề lớn, phân cấp rõ ràng, khoảng cách dòng tối ưu cho các bảng dữ liệu dày đặc.
+
+### 8.3. Bố cục giao diện (Layout)
+*   **Left Sidebar:** Thanh điều hướng bên trái thu gọn, quản lý các phân hệ chính (Dashboard, Products, Media Center, Publisher, Settings).
+*   **Top Navigation:** Thanh điều hướng trên cùng chứa Breadcrumbs (đường dẫn liên kết), ô tìm kiếm nhanh dạng Command Palette (tương tự Raycast), biểu tượng Chuông thông báo và Avatar người dùng.
+*   **Main Content Area:** Khu vực hiển thị nội dung chính với Sticky Header (tiêu đề cố định khi cuộn) và các bảng dữ liệu có thể co giãn cột (Resizable Tables).
+
+---
+
+## 9. Hệ thống Linh kiện Giao diện (UI Components)
+
+Hệ thống được lắp ghép từ các Component tái sử dụng cao cấp:
+*   **KPI Cards:** Thẻ chỉ số hiển thị tổng quan sản phẩm, ảnh/video, dung lượng lưu trữ, số lượng sản phẩm nhập/đăng tải trong ngày kèm theo biểu đồ mini thể hiện xu hướng.
+*   **Charts (Biểu đồ):** Sử dụng các biểu đồ đường và cột tối giản thể hiện sự tăng trưởng của sản phẩm, lịch sử đăng tải và tiến trình import dữ liệu.
+*   **Command Palette:** Thanh lệnh tìm kiếm nhanh (ấn `Cmd+K` hoặc `Ctrl+K`) để điều hướng nhanh hoặc thực hiện các lệnh khẩn cấp.
+*   **Timeline UI:** Trục thời gian hiển thị lịch sử hoạt động (Activity Log) và lịch sử từng Job xuất bản sản phẩm.
+*   **Notification Dropdown:** Trung tâm thông báo chia nhóm theo Hôm nay/Hôm qua với các huy hiệu (Badge) số lượng chưa đọc.
+*   **Tabs & Accordion:** Dùng trong trang cấu hình (Settings) để phân loại cài đặt General, Storage, Publisher, Telegram và Appearance một cách ngăn nắp.
+
+---
+
+## 10. Công nghệ đề xuất
 
 > [!NOTE]
 > Lựa chọn công nghệ tập trung vào sự ổn định, khả năng mở rộng tốt và tốc độ phát triển nhanh để nhanh chóng đưa sản phẩm MVP ra thị trường.
@@ -253,22 +274,23 @@ Hệ thống sử dụng hệ quản trị cơ sở dữ liệu **PostgreSQL/MyS
 
 ---
 
-## 9. Lộ trình phát triển (Roadmap)
+## 11. Lộ trình phát triển (Roadmap)
 
-*   **Giai đoạn 1: Xây dựng nền tảng (MVP)**
+*   **Giai đoạn 1: Xây dựng nền tảng & UI/UX Core (MVP)**
     *   Thiết lập cơ sở dữ liệu và môi trường Docker.
     *   Hoàn thiện Module Sản phẩm, Danh mục và Biến thể.
     *   Xây dựng Media Center với tính năng tự động liên kết ảnh qua SKU.
     *   Hoàn thiện tính năng Import/Export sản phẩm qua Excel/CSV.
+    *   Triển khai bộ giao diện Dashboard, Product Table, Media Center theo phong cách thiết kế Vercel/Linear.
 *   **Giai đoạn 2: Tích hợp và Đồng bộ (Publisher)**
-    *   Phát triển khung kết nối đa kênh (Publisher Framework).
+    *   Phát triển khung kết nối đa kênh (Publisher Framework) kèm giao diện Kanban Dashboard.
     *   Tích hợp API đồng bộ sản phẩm lên Shopee.
     *   Tích hợp API đồng bộ sản phẩm lên TikTok Shop.
 *   **Giai đoạn 3: Tự động hóa vận hành (Telegram & Scheduler)**
     *   Xây dựng Telegram Bot nhận thông báo trạng thái kho hàng, đơn hàng.
-    *   Tích hợp các lệnh điều khiển hệ thống cơ bản qua Telegram.
+    *   Tích hợp trang cài đặt cấu hình Telegram Bot trên Web UI.
     *   Thiết lập lịch trình báo cáo tự động hàng ngày/hàng tuần.
 *   **Giai đoạn 4: Trợ lý thông minh (AI Integration)**
     *   Phát triển AI Content Engine độc lập bằng Python.
     *   Tích hợp tính năng cào dữ liệu đối thủ và tự động tối ưu hóa SEO bằng AI.
-    *   Tối ưu hóa gợi ý giá bán và dự báo tồn kho bằng học máy.
+    *   Kích hoạt các thẻ giao diện AI trước đó sang trạng thái hoạt động.
