@@ -5,8 +5,8 @@ import Link from 'next/link';
 import api from '@/lib/api';
 import { DashboardStats } from '@/types';
 import { formatDate, importStatusConfig } from '@/lib/utils';
-import { 
-  Package, Image, Upload, TrendingUp, AlertCircle, CheckCircle2, 
+import {
+  Package, Image, Upload, TrendingUp, AlertCircle, CheckCircle2,
   Clock, Zap, ArrowUpRight, Plus, Sparkles, RefreshCw, Layers, History, Play
 } from 'lucide-react';
 
@@ -75,8 +75,8 @@ export default function DashboardPage() {
             Dữ liệu vận hành tự động cập nhật thời gian thực.
           </p>
         </div>
-        <button 
-          onClick={handleSyncAll} 
+        <button
+          onClick={handleSyncAll}
           disabled={isSyncing}
           className="btn-ghost text-[10px] font-medium py-1.5 px-3 flex items-center gap-1.5 hover:bg-white/[0.04] cursor-pointer"
         >
@@ -118,7 +118,7 @@ export default function DashboardPage() {
 
       {/* Dashboard Grid - Three Balanced Rows */}
       <div className="space-y-6">
-        
+
         {/* ROW 1: Analytics & Quick Actions (Height balanced ~260px) */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
           {/* Left: Line Chart (2/3 width) */}
@@ -132,7 +132,7 @@ export default function DashboardPage() {
                 <TrendingUp size={10} /> +18.4%
               </span>
             </div>
-            
+
             <div className="w-full flex gap-3 pt-4">
               {/* Y-Axis labels */}
               <div className="flex flex-col justify-between text-[9px] text-white/25 text-right w-6 h-36 pr-1.5 select-none font-mono">
@@ -148,33 +148,33 @@ export default function DashboardPage() {
                 <svg className="w-full h-36" viewBox="0 0 500 120" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.15"/>
-                      <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.0"/>
+                      <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.15" />
+                      <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.0" />
                     </linearGradient>
                   </defs>
-                  
+
                   {/* Grid Lines */}
                   <line x1="0" y1="0" x2="500" y2="0" stroke="rgba(255,255,255,0.03)" strokeWidth="1" strokeDasharray="2 2" />
                   <line x1="0" y1="30" x2="500" y2="30" stroke="rgba(255,255,255,0.03)" strokeWidth="1" strokeDasharray="2 2" />
                   <line x1="0" y1="60" x2="500" y2="60" stroke="rgba(255,255,255,0.03)" strokeWidth="1" strokeDasharray="2 2" />
                   <line x1="0" y1="90" x2="500" y2="90" stroke="rgba(255,255,255,0.03)" strokeWidth="1" strokeDasharray="2 2" />
                   <line x1="0" y1="120" x2="500" y2="120" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-                  
+
                   {/* Area */}
-                  <path 
-                    d="M 0 105 Q 50 90 100 95 T 200 55 T 300 70 T 400 30 T 500 15 L 500 120 L 0 120 Z" 
-                    fill="url(#chart-gradient)" 
+                  <path
+                    d="M 0 105 Q 50 90 100 95 T 200 55 T 300 70 T 400 30 T 500 15 L 500 120 L 0 120 Z"
+                    fill="url(#chart-gradient)"
                   />
-                  
+
                   {/* Line */}
-                  <path 
-                    d="M 0 105 Q 50 90 100 95 T 200 55 T 300 70 T 400 30 T 500 15" 
-                    fill="none" 
-                    stroke="#3b82f6" 
-                    strokeWidth="1.5" 
+                  <path
+                    d="M 0 105 Q 50 90 100 95 T 200 55 T 300 70 T 400 30 T 500 15"
+                    fill="none"
+                    stroke="#3b82f6"
+                    strokeWidth="1.5"
                     strokeLinecap="round"
                   />
-                  
+
                   {/* Hotspots */}
                   <circle cx="200" cy="55" r="2.5" fill="#60a5fa" stroke="#07070c" strokeWidth="1" />
                   <circle cx="400" cy="30" r="2.5" fill="#60a5fa" stroke="#07070c" strokeWidth="1" />
@@ -200,7 +200,7 @@ export default function DashboardPage() {
               <h3 className="font-semibold text-xs uppercase tracking-wider text-white/40">Tác vụ nhanh</h3>
               <p className="text-[10px] text-white/35 mt-0.5">Thực hiện nhanh các tác vụ hệ thống</p>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-2.5 mt-4 flex-1 justify-center">
               <Link href="/dashboard/import-export" className="flex flex-col items-start p-3 rounded-lg border border-white/[0.03] bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/[0.06] transition-all group">
                 <Upload size={14} className="text-indigo-400 mb-2 group-hover:scale-105 transition-transform" />
@@ -239,7 +239,7 @@ export default function DashboardPage() {
                 Xem tất cả <ArrowUpRight size={10} />
               </Link>
             </div>
-            
+
             <div className="flex-1 min-h-[220px]">
               {!stats?.recent_imports?.length ? (
                 <div className="flex flex-col items-center justify-center h-full py-12 text-white/30">
@@ -267,7 +267,7 @@ export default function DashboardPage() {
                             <td className="text-xs text-white/60">{imp.total_rows} dòng</td>
                             <td className="text-xs text-emerald-400 font-medium">{imp.success_rows} dòng</td>
                             <td><span className={`badge text-[9px] py-0.5 px-2 ${cfg.color}`}>{cfg.label}</span></td>
-                            <td className="text-[10px] text-white/35">{formatDate(imp.created_at)}</td>
+                            <td className="text-[10px] text-white/35" suppressHydrationWarning>{formatDate(imp.created_at)}</td>
                           </tr>
                         );
                       })}
@@ -284,7 +284,7 @@ export default function DashboardPage() {
               <History size={13} className="text-white/40" />
               <h3 className="font-semibold text-xs uppercase tracking-wider text-white/40">Nhật ký hoạt động</h3>
             </div>
-            
+
             <div className="flex-1 relative border-l border-white/[0.05] ml-2 pl-4 space-y-4 py-1 overflow-hidden">
               <div className="relative">
                 <span className="absolute -left-[21px] top-1 w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-[#07070c]" />
@@ -343,7 +343,7 @@ export default function DashboardPage() {
               <h3 className="font-semibold text-xs uppercase tracking-wider text-white/50">Lịch sử đăng tải</h3>
               <p className="text-[10px] text-white/35 mt-0.5">Số lượng sản phẩm đồng bộ lên các sàn</p>
             </div>
-            
+
             {/* Custom CSS Bar Chart */}
             <div className="h-28 flex items-end justify-between gap-2 pt-2">
               {[
@@ -356,7 +356,7 @@ export default function DashboardPage() {
                 { label: 'CN', val: 10, max: 20 },
               ].map((bar, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
-                  <div className="w-full relative rounded-t-xs transition-all duration-300 group-hover:opacity-80" style={{ 
+                  <div className="w-full relative rounded-t-xs transition-all duration-300 group-hover:opacity-80" style={{
                     height: `${(bar.val / bar.max) * 60}px`,
                     background: i === 5 ? 'linear-gradient(to top, #8b5cf6, #c084fc)' : 'linear-gradient(to top, #3b82f6, #60a5fa)'
                   }}>

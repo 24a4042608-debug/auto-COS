@@ -152,7 +152,7 @@ export default function MediaPage() {
     const currentTags = infoAsset.tags || [];
     if (currentTags.includes(newTag.trim())) return;
     const updatedTags = [...currentTags, newTag.trim()];
-    
+
     // Update locally first
     setInfoAsset(prev => prev ? { ...prev, tags: updatedTags } : null);
     setNewTag('');
@@ -168,7 +168,7 @@ export default function MediaPage() {
   const handleRemoveTag = async (tagToRemove: string) => {
     if (!infoAsset) return;
     const updatedTags = (infoAsset.tags || []).filter(t => t !== tagToRemove);
-    
+
     setInfoAsset(prev => prev ? { ...prev, tags: updatedTags } : null);
 
     try {
@@ -280,8 +280,8 @@ export default function MediaPage() {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3">
           {assets.data.map((asset) => (
-            <div 
-              key={asset.id} 
+            <div
+              key={asset.id}
               onClick={() => openInfoPanel(asset)}
               className="group relative glass-card overflow-hidden aspect-square cursor-pointer hover:border-white/15 transition-all"
             >
@@ -310,21 +310,21 @@ export default function MediaPage() {
               {/* Hover Overlay */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-200 flex flex-col justify-between p-2.5" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)' }}>
                 <div className="flex justify-end gap-1.5">
-                  <button 
+                  <button
                     onClick={(e) => handleCopyLink(asset, e)}
                     className="w-6 h-6 rounded-md flex items-center justify-center text-white/50 hover:text-white hover:bg-white/15 transition-all bg-black/40 border-none cursor-pointer"
                     title="Copy Link URL"
                   >
                     {copiedId === asset.id ? <Check size={10} className="text-emerald-400" /> : <Link2 size={10} />}
                   </button>
-                  <button 
+                  <button
                     onClick={(e) => { e.stopPropagation(); setPreviewAsset(asset); }}
                     className="w-6 h-6 rounded-md flex items-center justify-center text-white/50 hover:text-white hover:bg-white/15 transition-all bg-black/40 border-none cursor-pointer"
                     title="Xem chi tiết"
                   >
                     <Eye size={10} />
                   </button>
-                  <button 
+                  <button
                     onClick={(e) => handleDelete(asset.id, e)}
                     className="w-6 h-6 rounded-md flex items-center justify-center text-white/50 hover:text-red-400 hover:bg-red-500/20 transition-all bg-black/40 border-none cursor-pointer"
                     title="Xóa"
@@ -360,8 +360,8 @@ export default function MediaPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-black/90 backdrop-blur-xs" onClick={() => setPreviewAsset(null)} />
           <div className="relative max-w-4xl w-full max-h-[85vh] flex flex-col items-center z-50 animate-fade-in">
-            <button 
-              onClick={() => setPreviewAsset(null)} 
+            <button
+              onClick={() => setPreviewAsset(null)}
               className="absolute -top-10 right-0 w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 hover:bg-white/15 text-white border-none cursor-pointer"
             >
               <X size={16} />
@@ -375,7 +375,7 @@ export default function MediaPage() {
             </div>
             <div className="text-center mt-3">
               <p className="text-xs font-semibold text-white">{previewAsset.original_name}</p>
-              <p className="text-[10px] text-white/40 mt-1">{formatFileSize(previewAsset.size)} · {formatDate(previewAsset.created_at)}</p>
+              <p className="text-[10px] text-white/40 mt-1" suppressHydrationWarning>{formatFileSize(previewAsset.size)} · {formatDate(previewAsset.created_at)}</p>
             </div>
           </div>
         </div>
@@ -393,8 +393,8 @@ export default function MediaPage() {
                 <Info size={13} className="text-indigo-400" />
                 <h3 className="text-xs uppercase font-bold text-white tracking-wider">Thông tin tệp tin</h3>
               </div>
-              <button 
-                onClick={() => setSelectedAssetId(null)} 
+              <button
+                onClick={() => setSelectedAssetId(null)}
                 className="w-7 h-7 rounded-lg flex items-center justify-center border border-white/[0.04] text-white/45 hover:text-white hover:bg-white/[0.03] transition-all bg-transparent cursor-pointer"
               >
                 <X size={14} />
@@ -418,7 +418,7 @@ export default function MediaPage() {
                         <Video size={48} className="text-white/20" />
                       </div>
                     )}
-                    <button 
+                    <button
                       onClick={() => setPreviewAsset(infoAsset)}
                       className="absolute bottom-2 right-2 px-2 py-1 rounded bg-black/60 hover:bg-black/80 text-[10px] text-white flex items-center gap-1 border-none cursor-pointer"
                     >
@@ -441,10 +441,10 @@ export default function MediaPage() {
                         </span>
                       ))}
                       <div className="flex items-center gap-1 max-w-[120px]">
-                        <input 
-                          type="text" 
-                          placeholder="Tag mới..." 
-                          value={newTag} 
+                        <input
+                          type="text"
+                          placeholder="Tag mới..."
+                          value={newTag}
                           onChange={e => setNewTag(e.target.value)}
                           onKeyDown={e => e.key === 'Enter' && handleAddTag()}
                           className="input-field text-[10px] py-0.5 px-1.5"
@@ -482,7 +482,7 @@ export default function MediaPage() {
                       </div>
                       <div className="flex justify-between p-2.5">
                         <span className="text-white/40">Ngày tải lên:</span>
-                        <span className="text-white font-medium">{formatDate(infoAsset.created_at)}</span>
+                        <span className="text-white font-medium" suppressHydrationWarning>{formatDate(infoAsset.created_at)}</span>
                       </div>
                     </div>
                   </div>
@@ -493,8 +493,8 @@ export default function MediaPage() {
                     {infoAsset.products && infoAsset.products.length > 0 ? (
                       <div className="space-y-1.5">
                         {infoAsset.products.map(p => (
-                          <Link 
-                            key={p.id} 
+                          <Link
+                            key={p.id}
                             href={`/dashboard/products`}
                             className="flex items-center justify-between p-2 rounded-lg border border-white/[0.03] hover:bg-white/[0.02] hover:border-white/[0.06] transition-all text-xs"
                           >
@@ -517,13 +517,13 @@ export default function MediaPage() {
             {/* Footer */}
             {infoAsset && (
               <div className="p-4 border-t border-white/[0.04] bg-white/[0.01] flex items-center gap-2">
-                <button 
+                <button
                   onClick={() => handleCopyLink(infoAsset)}
                   className="btn-ghost text-xs flex-1 justify-center py-2 cursor-pointer border border-white/[0.06] bg-transparent text-white/70"
                 >
                   {copiedId === infoAsset.id ? <><CheckCircle2 size={13} className="text-emerald-400" /> Đã copy</> : <><Copy size={13} /> Sao chép URL</>}
                 </button>
-                <button 
+                <button
                   onClick={() => handleDelete(infoAsset.id)}
                   className="btn-ghost text-xs py-2 px-3 hover:bg-red-500/15 hover:text-red-400 hover:border-red-500/20 cursor-pointer border border-white/[0.06] text-white/50 bg-transparent"
                   title="Xóa tệp tin"

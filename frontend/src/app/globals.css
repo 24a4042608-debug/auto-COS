@@ -27,10 +27,41 @@ body {
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Sidebar Scrollbar */
+.sidebar-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 2px;
+}
+
+.sidebar-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+}
 
 /* Glass card */
 .glass-card {
@@ -63,11 +94,13 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 .btn-primary:hover {
   background: linear-gradient(135deg, #818cf8, #a78bfa);
   transform: translateY(-1px);
   box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
 }
+
 .btn-primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -89,6 +122,7 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 .btn-ghost:hover {
   background: rgba(255, 255, 255, 0.06);
   color: white;
@@ -107,7 +141,11 @@ body {
   outline: none;
   transition: all 0.2s ease;
 }
-.input-field::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+.input-field::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
 .input-field:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
@@ -129,6 +167,7 @@ body {
   width: 100%;
   border-collapse: collapse;
 }
+
 .data-table th {
   padding: 0.75rem 1rem;
   text-align: left;
@@ -139,15 +178,18 @@ body {
   color: rgba(255, 255, 255, 0.4);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
+
 .data-table td {
   padding: 0.875rem 1rem;
   font-size: 0.875rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   vertical-align: middle;
 }
+
 .data-table tbody tr {
   transition: background 0.15s ease;
 }
+
 .data-table tbody tr:hover {
   background: rgba(255, 255, 255, 0.025);
 }
@@ -165,17 +207,33 @@ body {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .animate-fade-in {
   animation: fadeIn 0.3s ease forwards;
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(99, 102, 241, 0); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+  }
 }
+
 .pulse-glow {
   animation: pulse-glow 2s infinite;
 }

@@ -469,7 +469,7 @@ export default function ImportExportPage() {
                         ) : <span className="text-white/20">0</span>}
                       </td>
                       <td><span className={`badge text-[10px] ${cfg.color}`}>{cfg.label}</span></td>
-                      <td className="text-[10px] text-white/35">{formatDate(imp.created_at)}</td>
+                      <td className="text-[10px] text-white/35" suppressHydrationWarning>{formatDate(imp.created_at)}</td>
                     </tr>
                   );
                 })}

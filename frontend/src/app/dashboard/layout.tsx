@@ -9,16 +9,36 @@ import {
   Search, Command, Sparkles, Settings, HelpCircle, CheckCircle, AlertTriangle, Globe
 } from 'lucide-react';
 
-const navItems = [
-  { href: '/dashboard', label: 'Tổng quan', icon: LayoutDashboard },
-  { href: '/dashboard/products', label: 'Sản phẩm', icon: Package },
-  { href: '/dashboard/media', label: 'Media Center', icon: Image },
-  { href: '/dashboard/import-export', label: 'Import / Export', icon: Upload },
-  { href: '/dashboard/publisher', label: 'Đăng tải', icon: Globe },
-  { href: '/dashboard/categories', label: 'Danh mục', icon: Tag },
-  { href: '/dashboard/brands', label: 'Thương hiệu', icon: Building2 },
-  { href: '/dashboard/suppliers', label: 'Nhà cung cấp', icon: Truck },
-  { href: '/dashboard/settings', label: 'Cài đặt', icon: Settings },
+const navGroups = [
+  {
+    title: 'Bảng điều khiển',
+    items: [
+      { href: '/dashboard', label: 'Tổng quan', icon: LayoutDashboard },
+    ],
+  },
+  {
+    title: 'Quản lý sản phẩm',
+    items: [
+      { href: '/dashboard/products', label: 'Sản phẩm', icon: Package },
+      { href: '/dashboard/categories', label: 'Danh mục', icon: Tag },
+      { href: '/dashboard/brands', label: 'Thương hiệu', icon: Building2 },
+      { href: '/dashboard/suppliers', label: 'Nhà cung cấp', icon: Truck },
+    ],
+  },
+  {
+    title: 'Kênh đăng & Tiện ích',
+    items: [
+      { href: '/dashboard/publisher', label: 'Đăng tải', icon: Globe },
+      { href: '/dashboard/media', label: 'Media Center', icon: Image },
+      { href: '/dashboard/import-export', label: 'Import / Export', icon: Upload },
+    ],
+  },
+  {
+    title: 'Hệ thống',
+    items: [
+      { href: '/dashboard/settings', label: 'Cài đặt', icon: Settings },
+    ],
+  },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -109,17 +129,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex min-h-screen w-full overflow-x-hidden" style={{ background: '#07070c' }}>
       {/* Sidebar - Vercel/Linear Style */}
-      <aside 
-        className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#09090f] border-r border-white/[0.04] flex flex-col transition-transform duration-300 lg:translate-x-0 lg:static lg:h-screen lg:flex-shrink-0 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#09090f] border-r border-white/[0.04] flex flex-col transition-transform duration-300 lg:translate-x-0 lg:static lg:h-screen lg:flex-shrink-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         {/* Logo - Perfectly Aligned */}
         <div className="flex items-center gap-3 px-6 py-5.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.04)' }}>
-          <img 
-            src="/logo.png" 
-            alt="ACOS Logo" 
-            className="w-9 h-9 object-contain rounded-lg border border-white/[0.08] bg-white/[0.02] p-1 shadow-[0_0_15px_rgba(255,255,255,0.02)]" 
+          <img
+            src="/logo.png"
+            alt="ACOS Logo"
+            className="w-9 h-9 object-contain rounded-lg border border-white/[0.08] bg-white/[0.02] p-1 shadow-[0_0_15px_rgba(255,255,255,0.02)]"
           />
           <div>
             <div className="font-bold text-[15px] tracking-wide text-white flex items-center gap-1.5">
@@ -130,28 +149,41 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3.5 py-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setSidebarOpen(false)}
-                className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-150 group border"
-                style={{
-                  background: isActive ? 'rgba(255,255,255,0.04)' : 'transparent',
-                  color: isActive ? 'white' : 'rgba(255,255,255,0.45)',
-                  borderColor: isActive ? 'rgba(255,255,255,0.06)' : 'transparent',
-                }}
-              >
-                <Icon size={16} className={`transition-colors ${isActive ? 'text-white' : 'text-white/40 group-hover:text-white/70'}`} />
-                <span className="flex-1 tracking-wide">{item.label}</span>
-                {isActive && <div className="w-1 h-1 rounded-full bg-white/80 shadow-[0_0_8px_rgba(255,255,255,0.5)]" />}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 px-4 py-6 space-y-7 overflow-y-auto sidebar-scrollbar">
+          {navGroups.map((group, groupIdx) => (
+            <div key={groupIdx} className="space-y-2.5">
+              <div className="px-3.5 text-[10px] font-bold text-white/25 uppercase tracking-widest">
+                {group.title}
+              </div>
+              <div className="space-y-2.5">
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setSidebarOpen(false)}
+                      className={`flex items-center gap-3.5 px-3.5 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-150 group border ${isActive
+                          ? 'bg-white/[0.04] text-white border-white/[0.06] shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_0_rgba(255,255,255,0.03)]'
+                          : 'bg-transparent text-white/45 border-transparent hover:bg-white/[0.02] hover:text-white/80 hover:border-white/[0.02]'
+                        }`}
+                    >
+                      <Icon
+                        size={15}
+                        className={`transition-colors duration-150 ${isActive ? 'text-white' : 'text-white/35 group-hover:text-white/70'
+                          }`}
+                      />
+                      <span className="flex-1 tracking-wide">{item.label}</span>
+                      {isActive && (
+                        <div className="w-1.5 h-1.5 rounded-full bg-white/80 shadow-[0_0_8px_rgba(255,255,255,0.6)]" />
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
 
         {/* User footer */}
