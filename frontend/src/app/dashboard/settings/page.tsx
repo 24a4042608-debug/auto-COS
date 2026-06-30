@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { 
   Settings, Database, Globe, Sliders, Bell, Sparkles, 
-  CheckCircle2, AlertCircle, Play, ShieldCheck, Moon, Sun, Monitor
+  CheckCircle2, AlertCircle, Play, ShieldCheck, Moon, Sun, Monitor, Loader2
 } from 'lucide-react';
 
 export default function SettingsPage() {

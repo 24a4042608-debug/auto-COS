@@ -1,13 +1,14 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Link from 'next/link';
 import api from '@/lib/api';
 import { Asset, PaginatedResponse, Product } from '@/types';
 import { formatFileSize, formatDate } from '@/lib/utils';
 import {
   Upload, Zap, Search, Image as ImageIcon, Video, Trash2,
   FolderInput, RefreshCw, Link2, AlertCircle, Loader2, CheckCircle2,
-  X, Eye, Info, Copy, Check, Tags, Plus
+  X, Eye, Info, Copy, Check, Tags, Plus, ChevronLeft, ChevronRight
 } from 'lucide-react';
 
 export default function MediaPage() {

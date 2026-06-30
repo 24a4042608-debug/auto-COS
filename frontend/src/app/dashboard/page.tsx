@@ -81,7 +81,7 @@ export default function DashboardPage() {
           className="btn-ghost text-[10px] font-medium py-1.5 px-3 flex items-center gap-1.5 hover:bg-white/[0.04] cursor-pointer"
         >
           <RefreshCw size={11} className={isSyncing ? 'animate-spin' : ''} />
-          {isSyncing ? 'Đang đồng bộ...' : 'Đồng bộ toàn sàn'}
+          {isSyncing ? 'Đang đồng bộ...' : 'Đòng bộ toàn sàn'}
         </button>
       </div>
 
@@ -116,12 +116,13 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Main Dashboard Layout Grid (Single Grid prevents overlapping, Fluid Full Width) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        {/* Left Column (2/3 width) */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Product Growth Chart (Google Analytics Style) */}
-          <div className="glass-card p-5 space-y-4">
+      {/* Dashboard Grid - Three Balanced Rows */}
+      <div className="space-y-6">
+        
+        {/* ROW 1: Analytics & Quick Actions (Height balanced ~260px) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+          {/* Left: Line Chart (2/3 width) */}
+          <div className="glass-card p-5 flex flex-col justify-between lg:col-span-2">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-semibold text-xs uppercase tracking-wider text-white/50">Sản lượng sản phẩm</h3>
@@ -132,8 +133,7 @@ export default function DashboardPage() {
               </span>
             </div>
             
-            {/* Google-style Chart Layout with Y-Axis Legend and Grid Lines */}
-            <div className="w-full flex gap-3 pt-2">
+            <div className="w-full flex gap-3 pt-4">
               {/* Y-Axis labels */}
               <div className="flex flex-col justify-between text-[9px] text-white/25 text-right w-6 h-36 pr-1.5 select-none font-mono">
                 <span>200</span>
@@ -194,102 +194,158 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <div className="glass-card p-5">
-            <h3 className="font-semibold text-xs uppercase tracking-wider text-white/40 mb-4">Tác vụ nhanh</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <Link href="/dashboard/import-export" className="flex flex-col items-center justify-center p-3.5 rounded-lg border border-white/[0.03] bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/[0.06] transition-all text-center group">
-                <Upload size={15} className="text-indigo-400 group-hover:scale-105 transition-transform" />
-                <span className="text-[11px] text-white/70 mt-2 font-medium">Nhập Excel</span>
+          {/* Right: Quick Actions (1/3 width, styled as premium cards to match chart height) */}
+          <div className="glass-card p-5 flex flex-col justify-between">
+            <div>
+              <h3 className="font-semibold text-xs uppercase tracking-wider text-white/40">Tác vụ nhanh</h3>
+              <p className="text-[10px] text-white/35 mt-0.5">Thực hiện nhanh các tác vụ hệ thống</p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-2.5 mt-4 flex-1 justify-center">
+              <Link href="/dashboard/import-export" className="flex flex-col items-start p-3 rounded-lg border border-white/[0.03] bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/[0.06] transition-all group">
+                <Upload size={14} className="text-indigo-400 mb-2 group-hover:scale-105 transition-transform" />
+                <span className="text-[11px] text-white font-medium">Nhập Excel</span>
+                <span className="text-[8px] text-white/35 mt-0.5 line-clamp-1">Tải tệp sản phẩm</span>
               </Link>
-              <Link href="/dashboard/media" className="flex flex-col items-center justify-center p-3.5 rounded-lg border border-white/[0.03] bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/[0.06] transition-all text-center group">
-                <Image size={15} className="text-emerald-400 group-hover:scale-105 transition-transform" />
-                <span className="text-[11px] text-white/70 mt-2 font-medium">Upload Media</span>
+              <Link href="/dashboard/media" className="flex flex-col items-start p-3 rounded-lg border border-white/[0.03] bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/[0.06] transition-all group">
+                <Image size={14} className="text-emerald-400 mb-2 group-hover:scale-105 transition-transform" />
+                <span className="text-[11px] text-white font-medium">Kho ảnh</span>
+                <span className="text-[8px] text-white/35 mt-0.5 line-clamp-1">Quản lý hình ảnh</span>
               </Link>
-              <button onClick={handleSyncAll} className="flex flex-col items-center justify-center p-3.5 rounded-lg border border-white/[0.03] bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/[0.06] transition-all text-center group bg-transparent cursor-pointer">
-                <Sparkles size={15} className="text-purple-400 group-hover:scale-105 transition-transform" />
-                <span className="text-[11px] text-white/70 mt-2 font-medium">Auto-Map SKU</span>
+              <button onClick={handleSyncAll} className="flex flex-col items-start p-3 rounded-lg border border-white/[0.03] bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/[0.06] transition-all group text-left w-full bg-transparent cursor-pointer">
+                <Sparkles size={14} className="text-purple-400 mb-2 group-hover:scale-105 transition-transform" />
+                <span className="text-[11px] text-white font-medium">Auto-Map</span>
+                <span className="text-[8px] text-white/35 mt-0.5 line-clamp-1">Ánh xạ SKU ảnh</span>
               </button>
-              <Link href="/dashboard/products/create" className="flex flex-col items-center justify-center p-3.5 rounded-lg border border-white/[0.03] bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/[0.06] transition-all text-center group">
-                <Plus size={15} className="text-white/50 group-hover:scale-105 transition-transform" />
-                <span className="text-[11px] text-white/70 mt-2 font-medium">Thêm sản phẩm</span>
+              <Link href="/dashboard/products/create" className="flex flex-col items-start p-3 rounded-lg border border-white/[0.03] bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/[0.06] transition-all group">
+                <Plus size={14} className="text-white/60 mb-2 group-hover:scale-105 transition-transform" />
+                <span className="text-[11px] text-white font-medium">Thêm hàng</span>
+                <span className="text-[8px] text-white/35 mt-0.5 line-clamp-1">Tạo sản phẩm mới</span>
               </Link>
             </div>
           </div>
+        </div>
 
-          {/* AI Banner */}
-          <div className="glass-card p-5 relative overflow-hidden border border-purple-500/10">
-            <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-5 pointer-events-none" style={{ background: 'radial-gradient(circle, #a78bfa, transparent)', filter: 'blur(50px)', transform: 'translate(30%, -30%)' }} />
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center border border-purple-500/20" style={{ background: 'rgba(167,139,250,0.06)' }}>
-                <Zap size={13} className="text-purple-400 fill-purple-400" />
-              </div>
+        {/* ROW 2: Recent Data & Operational Logs (Height balanced ~310px) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+          {/* Left: Recent Imports Table (2/3 width) */}
+          <div className="glass-card overflow-hidden lg:col-span-2 flex flex-col justify-between">
+            <div className="px-5 py-4 border-b border-white/[0.04] flex justify-between items-center bg-white/[0.01]">
               <div>
-                <h3 className="font-semibold text-xs text-white">AI Content Engine</h3>
-                <p className="text-[9px] text-white/35 mt-0.5">Tự động hóa toàn bộ quy trình viết bài & tối ưu SEO</p>
+                <h3 className="font-semibold text-xs uppercase tracking-wider text-white/40">Lịch sử Nhập Excel (Import) gần đây</h3>
+                <p className="text-[9px] text-white/30 mt-0.5">Danh sách các tệp dữ liệu đã tải lên hệ thống</p>
               </div>
-              <span className="text-[8px] font-bold px-1.5 py-0.2 rounded bg-purple-500/15 text-purple-300 border border-purple-500/25 ml-auto">
-                Sắp ra mắt
-              </span>
+              <Link href="/dashboard/import-export" className="text-[10px] text-indigo-400 hover:underline flex items-center gap-1">
+                Xem tất cả <ArrowUpRight size={10} />
+              </Link>
             </div>
-            <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>
-              Trợ lý AI sẽ tự động phân tích từ khóa hot trên thị trường, crawl sản phẩm từ các đối thủ, tự sinh tiêu đề, mô tả và tối ưu SEO hình ảnh trước khi đồng bộ lên Shopee/TikTok Shop.
-            </p>
-            <div className="mt-4 flex gap-4 text-[9px] text-white/25 border-t border-white/[0.03] pt-4">
+            
+            <div className="flex-1 min-h-[220px]">
+              {!stats?.recent_imports?.length ? (
+                <div className="flex flex-col items-center justify-center h-full py-12 text-white/30">
+                  <Upload size={24} className="opacity-30 mb-2" />
+                  <p className="text-xs">Chưa có phiên import nào</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="data-table">
+                    <thead>
+                      <tr>
+                        <th className="text-[9px]">Tên tệp</th>
+                        <th className="text-[9px]">Tổng dòng</th>
+                        <th className="text-[9px]">Thành công</th>
+                        <th className="text-[9px]">Trạng thái</th>
+                        <th className="text-[9px]">Thời gian</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/[0.02]">
+                      {stats.recent_imports.slice(0, 4).map((imp) => {
+                        const cfg = importStatusConfig[imp.status];
+                        return (
+                          <tr key={imp.id} className="hover:bg-white/[0.01] transition-colors">
+                            <td className="text-xs text-white font-medium max-w-[180px] truncate">{imp.original_filename}</td>
+                            <td className="text-xs text-white/60">{imp.total_rows} dòng</td>
+                            <td className="text-xs text-emerald-400 font-medium">{imp.success_rows} dòng</td>
+                            <td><span className={`badge text-[9px] py-0.5 px-2 ${cfg.color}`}>{cfg.label}</span></td>
+                            <td className="text-[10px] text-white/35">{formatDate(imp.created_at)}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right: Activity Timeline (1/3 width, height matching the table) */}
+          <div className="glass-card p-5 flex flex-col justify-between">
+            <div className="flex items-center gap-2 mb-4">
+              <History size={13} className="text-white/40" />
+              <h3 className="font-semibold text-xs uppercase tracking-wider text-white/40">Nhật ký hoạt động</h3>
+            </div>
+            
+            <div className="flex-1 relative border-l border-white/[0.05] ml-2 pl-4 space-y-4 py-1 overflow-hidden">
+              <div className="relative">
+                <span className="absolute -left-[21px] top-1 w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-[#07070c]" />
+                <div className="text-xs font-medium text-white">Import hoàn thành</div>
+                <div className="text-[9px] text-white/40 mt-0.5">Đã nhập 15 sản phẩm "Áo thun Cotton" cho ACOS Fashion.</div>
+                <div className="text-[8px] text-white/25 mt-0.5">10 phút trước · Hệ thống</div>
+              </div>
+              <div className="relative">
+                <span className="absolute -left-[21px] top-1 w-2 h-2 rounded-full bg-indigo-500 ring-4 ring-[#07070c]" />
+                <div className="text-xs font-medium text-white">Đăng tải sản phẩm mới</div>
+                <div className="text-[9px] text-white/40 mt-0.5">Đồng bộ thành công 4 biến thể của iPhone 15 Pro Max lên Shopee.</div>
+                <div className="text-[8px] text-white/25 mt-0.5">2 giờ trước · Admin ACOS</div>
+              </div>
+              <div className="relative">
+                <span className="absolute -left-[21px] top-1 w-2 h-2 rounded-full bg-purple-500 ring-4 ring-[#07070c]" />
+                <div className="text-xs font-medium text-white">Tự động liên kết Media</div>
+                <div className="text-[9px] text-white/40 mt-0.5">Auto-Map đã tự động ánh xạ 8 hình ảnh mới thông qua SKU.</div>
+                <div className="text-[8px] text-white/25 mt-0.5">Hôm qua · Trợ lý AI</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ROW 3: AI Engine & Publishing Channel Statistics (Height balanced ~220px) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+          {/* Left: AI Banner (2/3 width) */}
+          <div className="glass-card p-5 relative overflow-hidden border border-purple-500/10 lg:col-span-2 flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-5 pointer-events-none" style={{ background: 'radial-gradient(circle, #a78bfa, transparent)', filter: 'blur(50px)', transform: 'translate(30%, -30%)' }} />
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center border border-purple-500/20" style={{ background: 'rgba(167,139,250,0.06)' }}>
+                  <Zap size={13} className="text-purple-400 fill-purple-400" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-xs text-white">AI Content Engine</h3>
+                  <p className="text-[9px] text-white/35 mt-0.5">Tự động hóa toàn bộ quy trình viết bài & tối ưu SEO</p>
+                </div>
+                <span className="text-[8px] font-bold px-1.5 py-0.2 rounded bg-purple-500/15 text-purple-300 border border-purple-500/25 ml-auto">
+                  Sắp ra mắt
+                </span>
+              </div>
+              <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                Trợ lý AI sẽ tự động phân tích từ khóa hot trên thị trường, crawl sản phẩm từ các đối thủ, tự sinh tiêu đề, mô tả và tối ưu SEO hình ảnh trước khi đồng bộ lên Shopee/TikTok Shop.
+              </p>
+            </div>
+            <div className="mt-4 flex gap-4 text-[9px] text-white/25 border-t border-white/[0.03] pt-3">
               <span className="flex items-center gap-1.5"><CheckCircle2 size={11} className="text-purple-400" /> Auto Crawl</span>
               <span className="flex items-center gap-1.5"><CheckCircle2 size={11} className="text-purple-400" /> AI Generate SEO</span>
               <span className="flex items-center gap-1.5"><CheckCircle2 size={11} className="text-purple-400" /> Auto Publish</span>
             </div>
           </div>
 
-          {/* Recent Imports */}
-          <div className="glass-card overflow-hidden">
-            <div className="px-5 py-4 border-b border-white/[0.04] flex justify-between items-center">
-              <h3 className="font-semibold text-xs uppercase tracking-wider text-white/40">Import gần đây</h3>
-              <Link href="/dashboard/import-export" className="text-[10px] text-indigo-400 hover:underline flex items-center gap-1">
-                Xem tất cả <ArrowUpRight size={10} />
-              </Link>
-            </div>
-            {!stats?.recent_imports?.length ? (
-              <div className="text-center py-8" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                <Upload size={24} className="mx-auto mb-2 opacity-30" />
-                <p className="text-xs">Chưa có phiên import nào</p>
-              </div>
-            ) : (
-              <div className="divide-y divide-white/[0.03]">
-                {stats.recent_imports.slice(0, 3).map((imp) => {
-                  const cfg = importStatusConfig[imp.status];
-                  return (
-                    <div key={imp.id} className="flex items-center justify-between p-4 hover:bg-white/[0.01] transition-colors">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <Upload size={13} className="text-white/30" />
-                        <div className="min-w-0">
-                          <div className="text-xs font-medium text-white truncate">{imp.original_filename}</div>
-                          <div className="text-[10px] mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>
-                            {imp.success_rows}/{imp.total_rows} dòng thành công · {formatDate(imp.created_at)}
-                          </div>
-                        </div>
-                      </div>
-                      <span className={`badge text-[10px] ${cfg.color}`}>{cfg.label}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Right Column (1/3 width) */}
-        <div className="space-y-6">
-          {/* Publish History Bar Chart (Google Analytics style) */}
-          <div className="glass-card p-5 space-y-4">
+          {/* Right: Publish History Bar Chart (1/3 width, height matching the AI card) */}
+          <div className="glass-card p-5 flex flex-col justify-between">
             <div>
               <h3 className="font-semibold text-xs uppercase tracking-wider text-white/50">Lịch sử đăng tải</h3>
               <p className="text-[10px] text-white/35 mt-0.5">Số lượng sản phẩm đồng bộ lên các sàn</p>
             </div>
             
             {/* Custom CSS Bar Chart */}
-            <div className="h-36 flex items-end justify-between gap-2.5 pt-3">
+            <div className="h-28 flex items-end justify-between gap-2 pt-2">
               {[
                 { label: 'T2', val: 12, max: 20 },
                 { label: 'T3', val: 8, max: 20 },
@@ -299,9 +355,9 @@ export default function DashboardPage() {
                 { label: 'T7', val: 19, max: 20 },
                 { label: 'CN', val: 10, max: 20 },
               ].map((bar, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                <div key={i} className="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
                   <div className="w-full relative rounded-t-xs transition-all duration-300 group-hover:opacity-80" style={{ 
-                    height: `${(bar.val / bar.max) * 90}px`,
+                    height: `${(bar.val / bar.max) * 60}px`,
                     background: i === 5 ? 'linear-gradient(to top, #8b5cf6, #c084fc)' : 'linear-gradient(to top, #3b82f6, #60a5fa)'
                   }}>
                     <div className="opacity-0 group-hover:opacity-100 absolute -top-7 left-1/2 -translate-x-1/2 bg-white text-[#07070c] text-[9px] font-bold px-1.5 py-0.5 rounded shadow-lg transition-opacity pointer-events-none whitespace-nowrap z-10">
@@ -313,42 +369,8 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
-
-          {/* Activity Timeline */}
-          <div className="glass-card p-5">
-            <div className="flex items-center gap-2 mb-5">
-              <History size={13} className="text-white/40" />
-              <h3 className="font-semibold text-xs uppercase tracking-wider text-white/40">Nhật ký hoạt động</h3>
-            </div>
-            
-            <div className="relative border-l border-white/[0.05] ml-2 pl-4 space-y-5 py-1">
-              <div className="relative">
-                <span className="absolute -left-[21px] top-1 w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-[#07070c]" />
-                <div className="text-xs font-medium text-white">Import hoàn thành</div>
-                <div className="text-[10px] text-white/50 mt-1">Đã nhập 15 sản phẩm "Áo thun Cotton" cho ACOS Fashion.</div>
-                <div className="text-[9px] text-white/30 mt-1">10 phút trước · Hệ thống</div>
-              </div>
-              <div className="relative">
-                <span className="absolute -left-[21px] top-1 w-2 h-2 rounded-full bg-indigo-500 ring-4 ring-[#07070c]" />
-                <div className="text-xs font-medium text-white">Đăng tải sản phẩm mới</div>
-                <div className="text-[10px] text-white/50 mt-1">Đồng bộ thành công 4 biến thể của iPhone 15 Pro Max lên Shopee.</div>
-                <div className="text-[9px] text-white/30 mt-1">2 giờ trước · Admin ACOS</div>
-              </div>
-              <div className="relative">
-                <span className="absolute -left-[21px] top-1 w-2 h-2 rounded-full bg-purple-500 ring-4 ring-[#07070c]" />
-                <div className="text-xs font-medium text-white">Tự động liên kết Media</div>
-                <div className="text-[10px] text-white/50 mt-1">Auto-Map đã tự động ánh xạ 8 hình ảnh mới thông qua mã SKU.</div>
-                <div className="text-[9px] text-white/30 mt-1">Hôm qua · Trợ lý AI</div>
-              </div>
-              <div className="relative">
-                <span className="absolute -left-[21px] top-1 w-2 h-2 rounded-full bg-amber-500 ring-4 ring-[#07070c]" />
-                <div className="text-xs font-medium text-white">Đồng bộ TikTok Shop bị lỗi</div>
-                <div className="text-[10px] text-white/50 mt-1">SKU TS-ACTIVE-BLK-L bị lỗi định dạng giá bán từ TikTok API.</div>
-                <div className="text-[9px] text-white/30 mt-1">3 ngày trước · Hệ thống</div>
-              </div>
-            </div>
-          </div>
         </div>
+
       </div>
     </div>
   );

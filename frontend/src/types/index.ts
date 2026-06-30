@@ -32,6 +32,7 @@ export interface ProductVariant {
   product_id: number;
   sku: string;
   attributes: Record<string, string>;
+  attribute_values?: Record<string, any> | null;
   price: number | null;
   sale_price: number | null;
   cost_price: number | null;
@@ -50,6 +51,9 @@ export interface Asset {
   height: number | null;
   mime_type: string;
   created_at: string;
+  path?: string;
+  disk?: string;
+  tags?: string[] | null;
 }
 
 export interface Product {
@@ -76,6 +80,7 @@ export interface Product {
   tags: string[] | null;
   has_variants: boolean;
   status: 'draft' | 'active' | 'inactive';
+  attributes?: Record<string, any> | null;
   variants?: ProductVariant[];
   assets?: Asset[];
   variants_count?: number;

@@ -6,7 +6,7 @@ import { useEffect, useState, useRef } from 'react';
 import {
   Zap, LayoutDashboard, Package, Image, Upload, Tag,
   Building2, Truck, LogOut, ChevronRight, Bell, User, Menu, X,
-  Search, Command, Sparkles, Settings, HelpCircle, CheckCircle, AlertTriangle
+  Search, Command, Sparkles, Settings, HelpCircle, CheckCircle, AlertTriangle, Globe
 } from 'lucide-react';
 
 const navItems = [
@@ -14,6 +14,7 @@ const navItems = [
   { href: '/dashboard/products', label: 'Sản phẩm', icon: Package },
   { href: '/dashboard/media', label: 'Media Center', icon: Image },
   { href: '/dashboard/import-export', label: 'Import / Export', icon: Upload },
+  { href: '/dashboard/publisher', label: 'Đăng tải', icon: Globe },
   { href: '/dashboard/categories', label: 'Danh mục', icon: Tag },
   { href: '/dashboard/brands', label: 'Thương hiệu', icon: Building2 },
   { href: '/dashboard/suppliers', label: 'Nhà cung cấp', icon: Truck },
@@ -107,25 +108,29 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex min-h-screen w-full overflow-x-hidden" style={{ background: '#07070c' }}>
-      {/* Sidebar - Static Flex Item for Desktop */}
+      {/* Sidebar - Vercel/Linear Style */}
       <aside 
-        className={`fixed inset-y-0 left-0 z-40 w-60 bg-[#09090f] border-r border-white/[0.04] flex flex-col transition-transform duration-300 lg:translate-x-0 lg:static lg:h-screen lg:flex-shrink-0 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#09090f] border-r border-white/[0.04] flex flex-col transition-transform duration-300 lg:translate-x-0 lg:static lg:h-screen lg:flex-shrink-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Logo */}
-        <div className="flex items-center gap-3 px-5 py-5 border-b" style={{ borderColor: 'rgba(255,255,255,0.04)' }}>
-          <img src="/logo.png" alt="ACOS Logo" className="w-8 h-8 object-contain rounded-lg shadow-[0_0_15px_rgba(99,102,241,0.2)]" />
+        {/* Logo - Perfectly Aligned */}
+        <div className="flex items-center gap-3 px-6 py-5.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.04)' }}>
+          <img 
+            src="/logo.png" 
+            alt="ACOS Logo" 
+            className="w-9 h-9 object-contain rounded-lg border border-white/[0.08] bg-white/[0.02] p-1 shadow-[0_0_15px_rgba(255,255,255,0.02)]" 
+          />
           <div>
-            <div className="font-bold text-sm tracking-wide text-white flex items-center gap-1.5">
-              ACOS <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">SaaS</span>
+            <div className="font-bold text-[15px] tracking-wide text-white flex items-center gap-1.5">
+              ACOS <span className="text-[8px] font-bold px-1.5 py-0.2 rounded bg-white/[0.06] text-white/70 border border-white/[0.08]">SaaS</span>
             </div>
-            <div className="text-[10px]" style={{ color: 'rgba(255,255,255,0.3)' }}>Auto Commerce OS</div>
+            <div className="text-[11px] font-medium" style={{ color: 'rgba(255,255,255,0.3)' }}>Auto Commerce OS</div>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3.5 py-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
@@ -134,33 +139,33 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 key={item.href}
                 href={item.href}
                 onClick={() => setSidebarOpen(false)}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-all duration-150 group border"
+                className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-150 group border"
                 style={{
-                  background: isActive ? 'rgba(99,102,241,0.06)' : 'transparent',
-                  color: isActive ? '#a5b4fc' : 'rgba(255,255,255,0.45)',
-                  borderColor: isActive ? 'rgba(99,102,241,0.15)' : 'transparent',
+                  background: isActive ? 'rgba(255,255,255,0.04)' : 'transparent',
+                  color: isActive ? 'white' : 'rgba(255,255,255,0.45)',
+                  borderColor: isActive ? 'rgba(255,255,255,0.06)' : 'transparent',
                 }}
               >
-                <Icon size={14} className={`transition-colors ${isActive ? 'text-[#818cf8]' : 'text-white/40 group-hover:text-white/70'}`} />
+                <Icon size={16} className={`transition-colors ${isActive ? 'text-white' : 'text-white/40 group-hover:text-white/70'}`} />
                 <span className="flex-1 tracking-wide">{item.label}</span>
-                {isActive && <div className="w-1 h-1 rounded-full bg-indigo-400 shadow-[0_0_8px_rgba(129,140,248,0.8)]" />}
+                {isActive && <div className="w-1 h-1 rounded-full bg-white/80 shadow-[0_0_8px_rgba(255,255,255,0.5)]" />}
               </Link>
             );
           })}
         </nav>
 
         {/* User footer */}
-        <div className="p-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.04)' }}>
+        <div className="p-3.5 border-t" style={{ borderColor: 'rgba(255,255,255,0.04)' }}>
           <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-white/[0.02]" style={{ background: 'rgba(255,255,255,0.01)' }}>
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold text-white shadow-inner" style={{ background: 'linear-gradient(135deg, #4f46e5, #a78bfa)' }}>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white shadow-inner" style={{ background: 'linear-gradient(135deg, #4f46e5, #a78bfa)' }}>
               {user?.name?.[0] ?? 'A'}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-xs font-medium text-white truncate">{user?.name ?? '...'}</div>
-              <div className="text-[10px] truncate" style={{ color: 'rgba(255,255,255,0.3)' }}>{user?.email ?? ''}</div>
+              <div className="text-[13px] font-medium text-white truncate">{user?.name ?? '...'}</div>
+              <div className="text-[11px] truncate" style={{ color: 'rgba(255,255,255,0.3)' }}>{user?.email ?? ''}</div>
             </div>
             <button onClick={handleLogout} className="text-white/30 hover:text-white/70 transition-colors bg-none border-none cursor-pointer" title="Đăng xuất">
-              <LogOut size={13} />
+              <LogOut size={14} />
             </button>
           </div>
         </div>
