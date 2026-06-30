@@ -21,6 +21,15 @@ use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::get('/import-db', function () {
+    try {
+        $sql = file_get_contents(base_path('export_postgres.sql'));
+        \Illuminate\Support\Facades\DB::unprepared($sql);
+        return response()->json(['message' => 'Dữ liệu đã được import thành công 100%!']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
 
 // Protected routes (Bypassed)
 Route::group([], function () {
