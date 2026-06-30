@@ -1,0 +1,40 @@
+services:
+  # 1. Backend Service
+  - type: web
+    name: acos-backend
+    env: docker
+    dockerContext: backend
+    dockerfilePath: backend/Dockerfile
+    plan: free
+    envVars:
+      - key: APP_KEY
+        value: base64:iFAGsj2BH2+gKQdVlHwUZgU68mTuD7kMytwiJTjIsQ4=
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: acos-db
+          property: host
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_DATABASE
+        fromDatabase:
+          name: acos-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: acos-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: acos-db
+          property: password
+
+databases:
+  # 2. Database Service (Free PostgreSQL on Render)
+  - name: acos-db
+    plan: free
