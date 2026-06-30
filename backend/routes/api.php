@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/import-db', function () {
     try {
+        // Clear all existing tables before import to avoid key conflicts
+        \Illuminate\Support\Facades\DB::unprepared('TRUNCATE TABLE product_variants, product_assets, products, assets, suppliers, brands, categories, users, tenants CASCADE;');
+        
         $sql = file_get_contents(base_path('export_postgres.sql'));
         \Illuminate\Support\Facades\DB::unprepared($sql);
         return response()->json(['message' => 'Dữ liệu đã được import thành công 100%!']);
