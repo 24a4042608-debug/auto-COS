@@ -6,14 +6,14 @@ import ParallaxImage from "@/components/ui/luxury/ParallaxImage";
 
 export default function AboutPage() {
   return (
-    <div className="space-y-24 md:space-y-36 pb-24 md:pb-36 font-sans">
+    <div className="space-y-24 md:space-y-36 pt-28 md:pt-36 pb-24 md:pb-36 font-sans">
       
       {/* 1. Manifesto Section */}
-      <section className="max-w-4xl mx-auto px-6 md:px-12 pt-12 text-center space-y-8">
+      <section className="max-w-4xl mx-auto px-6 md:px-12 text-center space-y-8">
         <span className="text-[10px] tracking-[0.4em] uppercase text-luxury-gold block">
           Manifesto
         </span>
-        <h1 className="font-serif text-4xl md:text-6xl text-luxury-text-primary tracking-wide leading-none uppercase">
+        <h1 className="font-serif text-luxury-heading text-luxury-text-primary tracking-wide uppercase">
           The Architecture of Cloth
         </h1>
         <p className="font-serif italic text-lg md:text-2xl text-luxury-text-secondary leading-relaxed max-w-2xl mx-auto pt-4">

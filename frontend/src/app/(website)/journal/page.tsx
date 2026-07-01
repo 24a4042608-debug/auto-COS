@@ -13,14 +13,14 @@ export default function JournalPage() {
   const listArticles = JOURNAL_ARTICLES.slice(1);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 space-y-24 font-sans">
+    <div className="max-w-7xl mx-auto px-6 md:px-12 pt-28 md:pt-36 pb-12 md:pb-24 space-y-24 font-sans">
       
       {/* Editorial Header */}
       <div className="max-w-3xl space-y-4">
         <span className="text-[10px] tracking-[0.4em] uppercase text-luxury-gold block">
           Atelier Journals
         </span>
-        <h1 className="font-serif text-4xl md:text-6xl text-luxury-text-primary tracking-wide leading-none uppercase">
+        <h1 className="font-serif text-luxury-heading text-luxury-text-primary tracking-wide uppercase">
           The Journal
         </h1>
         <p className="text-sm text-luxury-text-secondary leading-relaxed max-w-xl">

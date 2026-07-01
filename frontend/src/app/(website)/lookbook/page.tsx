@@ -8,14 +8,14 @@ import ParallaxImage from "@/components/ui/luxury/ParallaxImage";
 
 export default function LookbookPage() {
   return (
-    <div className="space-y-36 pb-24 md:pb-36 font-sans">
+    <div className="space-y-36 pt-28 md:pt-36 pb-24 md:pb-36 font-sans">
       
       {/* Editorial Header */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 pt-12 space-y-4">
+      <section className="max-w-7xl mx-auto px-6 md:px-12 space-y-4">
         <span className="text-[10px] tracking-[0.4em] uppercase text-luxury-gold block">
           Campaign Dailies
         </span>
-        <h1 className="font-serif text-4xl md:text-6xl text-luxury-text-primary tracking-wide leading-none uppercase">
+        <h1 className="font-serif text-luxury-heading text-luxury-text-primary tracking-wide uppercase">
           Storytelling Lookbook
         </h1>
         <p className="text-sm text-luxury-text-secondary leading-relaxed max-w-xl">

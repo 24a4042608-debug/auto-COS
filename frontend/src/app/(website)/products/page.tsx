@@ -25,14 +25,14 @@ export default function ProductsPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 space-y-16">
+    <div className="max-w-7xl mx-auto px-6 md:px-12 pt-28 md:pt-36 pb-12 md:pb-24 space-y-16">
       
       {/* Header */}
       <div className="max-w-3xl space-y-4">
         <span className="text-[10px] tracking-[0.4em] uppercase text-luxury-gold block font-sans">
           The Catalogue
         </span>
-        <h1 className="font-serif text-4xl md:text-6xl text-luxury-text-primary tracking-wide leading-none uppercase">
+        <h1 className="font-serif text-luxury-heading text-luxury-text-primary tracking-wide uppercase">
           Atelier Silhouettes
         </h1>
         <p className="text-sm text-luxury-text-secondary leading-relaxed font-sans max-w-xl">

@@ -647,9 +647,31 @@ html.light .border-white\/\[0\.08\] {
 
 /* ─── Luxury Showcase Styles ────────────────────────── */
 .theme-luxury {
-  background-color: #FAFAFA;
-  color: #111111;
-  font-family: var(--font-sans);
+  background-color: #FAFAFA !important;
+  color: #111111 !important;
+}
+
+.theme-luxury h1,
+.theme-luxury h2,
+.theme-luxury h3,
+.theme-luxury h4,
+.theme-luxury h5,
+.theme-luxury h6,
+.theme-luxury .font-serif {
+  font-family: var(--font-playfair), Georgia, serif !important;
+}
+
+.theme-luxury,
+.theme-luxury p,
+.theme-luxury span,
+.theme-luxury div,
+.theme-luxury a,
+.theme-luxury button,
+.theme-luxury input,
+.theme-luxury select,
+.theme-luxury textarea,
+.theme-luxury .font-sans {
+  font-family: var(--font-inter), system-ui, sans-serif !important;
 }
 
 .luxury-scrollbar::-webkit-scrollbar {
@@ -679,7 +701,23 @@ html.light .border-white\/\[0\.08\] {
 }
 
 .glass-luxury {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+/* Fluid Typography using clamp() for screen consistency */
+.theme-luxury .text-luxury-hero {
+  font-size: clamp(2.2rem, 7.5vw, 6rem) !important;
+  line-height: 1.05 !important;
+}
+
+.theme-luxury .text-luxury-heading {
+  font-size: clamp(1.75rem, 4.5vw, 3.5rem) !important;
+  line-height: 1.1 !important;
+}
+
+.theme-luxury .text-luxury-subheading {
+  font-size: clamp(1.1rem, 3vw, 2rem) !important;
+  line-height: 1.25 !important;
 }

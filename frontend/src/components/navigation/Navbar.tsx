@@ -56,10 +56,16 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="group focus:outline-none">
-            <span className="font-serif text-xl md:text-2xl tracking-[0.25em] text-luxury-text-primary uppercase transition-colors duration-300 group-hover:text-luxury-gold">
+            <span className={cn(
+              "font-serif text-xl md:text-2xl tracking-[0.25em] uppercase transition-colors duration-300 group-hover:text-luxury-gold",
+              scrolled ? "text-luxury-text-primary" : "text-white"
+            )}>
               VHSM
             </span>
-            <span className="block text-[8px] tracking-[0.4em] uppercase text-luxury-text-secondary -mt-0.5 ml-0.5">
+            <span className={cn(
+              "block text-[8px] tracking-[0.4em] uppercase -mt-0.5 ml-0.5 transition-colors duration-300",
+              scrolled ? "text-luxury-text-secondary" : "text-white/70"
+            )}>
               Atelier
             </span>
           </Link>
@@ -77,9 +83,9 @@ export default function Navbar() {
                   href={link.href}
                   className={cn(
                     "font-sans text-xs tracking-[0.15em] uppercase transition-colors duration-300 hover:text-luxury-gold focus:outline-none",
-                    pathname === link.href || pathname.startsWith(link.href + "/")
-                      ? "text-luxury-gold"
-                      : "text-luxury-text-primary"
+                    scrolled
+                      ? (pathname === link.href || pathname.startsWith(link.href + "/") ? "text-luxury-gold" : "text-luxury-text-primary")
+                      : (pathname === link.href || pathname.startsWith(link.href + "/") ? "text-luxury-gold" : "text-white")
                   )}
                 >
                   {link.name}
@@ -98,12 +104,20 @@ export default function Navbar() {
 
           {/* Search and Utility */}
           <div className="hidden lg:flex items-center space-x-6">
-            <button className="text-luxury-text-primary hover:text-luxury-gold transition-colors duration-300 focus:outline-none">
+            <button className={cn(
+              "transition-colors duration-300 focus:outline-none bg-transparent border-none cursor-pointer",
+              scrolled ? "text-luxury-text-primary hover:text-luxury-gold" : "text-white hover:text-luxury-gold"
+            )}>
               <Search className="w-4 h-4 stroke-[1.5]" />
             </button>
-            <div className="h-4 w-[1px] bg-luxury-border" />
+            <div className={cn("h-4 w-[1px]", scrolled ? "bg-luxury-border" : "bg-white/25")} />
             <Link href="/collections">
-              <MagneticButton className="border border-luxury-text-primary hover:border-luxury-gold hover:text-luxury-gold text-luxury-text-primary px-5 py-2 text-[10px] uppercase tracking-[0.2em] transition-all duration-300 rounded-sm">
+              <MagneticButton className={cn(
+                "border px-5 py-2 text-[10px] uppercase tracking-[0.2em] transition-all duration-300 rounded-none bg-transparent",
+                scrolled
+                  ? "border-luxury-text-primary text-luxury-text-primary hover:border-luxury-gold hover:text-luxury-gold"
+                  : "border-white text-white hover:border-luxury-gold hover:text-luxury-gold"
+              )}>
                 Explore Campaign
               </MagneticButton>
             </Link>
@@ -111,12 +125,18 @@ export default function Navbar() {
 
           {/* Mobile Toggle */}
           <div className="flex items-center space-x-4 lg:hidden">
-            <button className="text-luxury-text-primary focus:outline-none">
+            <button className={cn(
+              "focus:outline-none bg-transparent border-none cursor-pointer",
+              scrolled ? "text-luxury-text-primary" : "text-white"
+            )}>
               <Search className="w-4 h-4 stroke-[1.5]" />
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-luxury-text-primary hover:text-luxury-gold transition-colors focus:outline-none"
+              className={cn(
+                "transition-colors focus:outline-none bg-transparent border-none cursor-pointer",
+                scrolled ? "text-luxury-text-primary hover:text-luxury-gold" : "text-white hover:text-luxury-gold"
+              )}
               aria-label="Toggle Menu"
             >
               {mobileMenuOpen ? (

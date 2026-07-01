@@ -31,7 +31,7 @@ export default function WebsiteLayout({
       <Navbar />
 
       {/* Primary content showcase */}
-      <main className="flex-grow pt-24 md:pt-28">
+      <main className="flex-grow">
         {children}
       </main>
 

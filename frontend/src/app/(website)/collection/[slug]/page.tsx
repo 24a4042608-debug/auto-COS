@@ -21,7 +21,7 @@ export default async function CollectionDetailPage({
   const products = LUXURY_PRODUCTS.filter((p) => p.collectionSlug === slug);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 space-y-16">
+    <div className="max-w-7xl mx-auto px-6 md:px-12 pt-28 md:pt-36 pb-12 md:pb-24 space-y-16">
       
       {/* Back Button */}
       <Link
@@ -38,7 +38,7 @@ export default async function CollectionDetailPage({
           <span className="text-[10px] tracking-[0.3em] uppercase text-luxury-gold block font-sans">
             Campaign {collection.season} &bull; {collection.year}
           </span>
-          <h1 className="font-serif text-3xl md:text-5xl text-luxury-text-primary tracking-wide uppercase">
+          <h1 className="font-serif text-luxury-heading text-luxury-text-primary tracking-wide uppercase">
             {collection.name}
           </h1>
           <p className="text-sm text-luxury-text-secondary leading-relaxed font-sans max-w-xl">

@@ -8,14 +8,14 @@ import ParallaxImage from "@/components/ui/luxury/ParallaxImage";
 
 export default function CollectionsPage() {
   return (
-    <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-20 space-y-24 md:space-y-36">
+    <div className="max-w-7xl mx-auto px-6 md:px-12 pt-28 md:pt-36 pb-12 md:pb-24 space-y-24 md:space-y-36">
       
       {/* Page Header */}
       <div className="max-w-3xl space-y-4">
         <span className="text-[10px] tracking-[0.4em] uppercase text-luxury-gold block font-sans">
           The Campaigns
         </span>
-        <h1 className="font-serif text-4xl md:text-6xl text-luxury-text-primary tracking-wide leading-none uppercase">
+        <h1 className="font-serif text-luxury-heading text-luxury-text-primary tracking-wide uppercase">
           Curated Collections
         </h1>
         <p className="text-sm text-luxury-text-secondary leading-relaxed font-sans max-w-xl">
@@ -48,7 +48,7 @@ export default function CollectionsPage() {
                   <span className="text-[10px] tracking-widest text-luxury-gold uppercase block font-sans">
                     {collection.season} &bull; {collection.year}
                   </span>
-                  <h2 className="font-serif text-3xl md:text-4xl text-luxury-text-primary tracking-wide hover:text-luxury-gold transition-colors">
+                  <h2 className="font-serif text-luxury-subheading text-luxury-text-primary tracking-wide hover:text-luxury-gold transition-colors">
                     <Link href={`/collection/${collection.slug}`}>{collection.name}</Link>
                   </h2>
                 </div>

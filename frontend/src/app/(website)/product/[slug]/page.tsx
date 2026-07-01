@@ -69,7 +69,7 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 space-y-24">
+    <div className="max-w-7xl mx-auto px-6 md:px-12 pt-28 md:pt-36 pb-12 md:pb-24 space-y-24">
       {/* Back Button */}
       <Link
         href="/products"

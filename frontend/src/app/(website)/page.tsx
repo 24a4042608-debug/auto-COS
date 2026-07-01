@@ -39,7 +39,7 @@ export default function HomePage() {
   return (
     <div className="space-y-32 md:space-y-48">
       {/* 1. HERO SECTION */}
-      <section className="relative h-[90vh] md:h-screen -mt-24 md:-mt-28 w-full overflow-hidden flex items-center justify-center">
+      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
         {/* Fullscreen Background Image */}
         <div className="absolute inset-0 z-0">
           <ParallaxImage
@@ -61,7 +61,7 @@ export default function HomePage() {
           <TextReveal
             text="LA SILHOUETTE ET LE VIDE"
             tag="h1"
-            className="font-serif text-5xl md:text-8xl tracking-wide max-w-4xl uppercase leading-[1.05]"
+            className="font-serif text-luxury-hero tracking-wide max-w-4xl uppercase"
             delay={0.2}
           />
           
