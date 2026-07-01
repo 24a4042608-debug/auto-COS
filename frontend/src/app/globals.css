@@ -13,14 +13,14 @@
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
 
-  --color-luxury-bg: #FAFAFA;
-  --color-luxury-surface: #FFFFFF;
-  --color-luxury-text-primary: #111111;
-  --color-luxury-text-secondary: #666666;
-  --color-luxury-border: #EAEAEA;
-  --color-luxury-gold: #D6B36A;
-  --color-luxury-success: #3BB273;
-  --color-luxury-error: #D64545;
+  --color-luxury-bg: #08080C;
+  --color-luxury-surface: #111115;
+  --color-luxury-text-primary: #F4F4F5;
+  --color-luxury-text-secondary: #9CA3AF;
+  --color-luxury-border: rgba(255, 255, 255, 0.10);
+  --color-luxury-gold: #E50914;
+  --color-luxury-success: #10b981;
+  --color-luxury-error: #FF2A2A;
 
   --font-serif: var(--font-playfair), Georgia, serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
@@ -34,8 +34,8 @@
 }
 
 body {
-  background-color: #0a0a0f;
-  color: #f0f0f5;
+  background-color: #08080C;
+  color: #F4F4F5;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -51,12 +51,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 99px;
+  background: rgba(229, 9, 20, 0.4);
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(229, 9, 20, 0.7);
 }
 
 .sidebar-scrollbar::-webkit-scrollbar {
@@ -645,10 +645,10 @@ html.light .border-white\/\[0\.08\] {
   border-color: #e2e8f0 !important;
 }
 
-/* ─── Luxury Showcase Styles ────────────────────────── */
+/* ─── Cinematic Streaming Showcase Styles ────────────────────────── */
 .theme-luxury {
-  background-color: #FAFAFA !important;
-  color: #111111 !important;
+  background-color: #08080C !important;
+  color: #F4F4F5 !important;
 }
 
 .theme-luxury h1,
@@ -656,9 +656,12 @@ html.light .border-white\/\[0\.08\] {
 .theme-luxury h3,
 .theme-luxury h4,
 .theme-luxury h5,
-.theme-luxury h6,
-.theme-luxury .font-serif {
-  font-family: var(--font-playfair), Georgia, serif !important;
+.theme-luxury h6 {
+  font-family: var(--font-sans), system-ui, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.1 !important;
+  color: #F4F4F5 !important;
 }
 
 .theme-luxury,
@@ -669,55 +672,184 @@ html.light .border-white\/\[0\.08\] {
 .theme-luxury button,
 .theme-luxury input,
 .theme-luxury select,
-.theme-luxury textarea,
-.theme-luxury .font-sans {
-  font-family: var(--font-inter), system-ui, sans-serif !important;
+.theme-luxury textarea {
+  font-family: var(--font-sans), system-ui, sans-serif !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1.5 !important;
 }
 
+/* Glass streaming card */
+.glass-streaming {
+  background: rgba(17, 17, 21, 0.85) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Glass nav for cinematic header */
+.glass-luxury {
+  background: rgba(8, 8, 12, 0.92) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Streaming scrollbar */
 .luxury-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 .luxury-scrollbar::-webkit-scrollbar-track {
-  background: #FAFAFA;
+  background: transparent;
 }
 
 .luxury-scrollbar::-webkit-scrollbar-thumb {
-  background: #D6B36A;
-  border-radius: 3px;
+  background: rgba(229, 9, 20, 0.5);
+  border-radius: 2px;
 }
 
 .luxury-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #b59452;
+  background: rgba(229, 9, 20, 0.8);
 }
 
-/* Hide standard cursor when custom cursor is active on desktop */
-@media (min-width: 1024px) {
-  .custom-cursor-active,
-  .custom-cursor-active * {
-    cursor: none !important;
-  }
+/* Horizontal scroll for movie rows — hide scrollbar but allow scroll */
+.horizontal-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
 }
 
-.glass-luxury {
-  background: rgba(255, 255, 255, 0.7) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
+/* Streaming red glow effect */
+.glow-red {
+  box-shadow: 0 0 25px rgba(229, 9, 20, 0.35), 0 0 60px rgba(229, 9, 20, 0.15);
 }
 
-/* Fluid Typography using clamp() for screen consistency */
+/* Movie card hover overlay transition */
+.movie-card-overlay {
+  background: linear-gradient(to top, rgba(8, 8, 12, 0.95) 0%, rgba(8, 8, 12, 0.5) 50%, transparent 100%);
+}
+
+/* Fluid Typography for streaming headings */
 .theme-luxury .text-luxury-hero {
-  font-size: clamp(2.2rem, 7.5vw, 6rem) !important;
-  line-height: 1.05 !important;
+  font-size: clamp(2.5rem, 7vw, 5.5rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.0 !important;
 }
 
 .theme-luxury .text-luxury-heading {
-  font-size: clamp(1.75rem, 4.5vw, 3.5rem) !important;
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
   line-height: 1.1 !important;
 }
 
 .theme-luxury .text-luxury-subheading {
-  font-size: clamp(1.1rem, 3vw, 2rem) !important;
-  line-height: 1.25 !important;
+  font-size: clamp(0.8rem, 1.8vw, 1rem) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.01em !important;
+  color: #9CA3AF !important;
+  line-height: 1.5 !important;
+}
+
+
+/* 90-Degree Geometry: Force zero border-radius on all elements inside the theme */
+.theme-luxury,
+.theme-luxury * {
+  border-radius: 0px !important;
+}
+
+/* Swiss Industrial Print: Heavy, Track-Tight Sans-Serif Headers */
+.theme-luxury h1,
+.theme-luxury h2,
+.theme-luxury h3,
+.theme-luxury h4,
+.theme-luxury h5,
+.theme-luxury h6,
+.theme-luxury .font-serif {
+  font-family: var(--font-sans), var(--font-inter), system-ui, sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 0.95 !important;
+  text-transform: uppercase !important;
+}
+
+/* Readable body text styling */
+.theme-luxury,
+.theme-luxury p,
+.theme-luxury span,
+.theme-luxury div,
+.theme-luxury a,
+.theme-luxury button,
+.theme-luxury input,
+.theme-luxury select,
+.theme-luxury textarea,
+.theme-luxury .font-sans {
+  font-family: var(--font-sans), var(--font-inter), system-ui, sans-serif !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.5 !important;
+}
+
+/* Monospace Telemetry Metadata */
+.theme-luxury .font-mono,
+.theme-luxury code,
+.theme-luxury kbd,
+.theme-luxury samp {
+  font-family: var(--font-mono), monospace !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+.luxury-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.luxury-scrollbar::-webkit-scrollbar-track {
+  background: #F4F4F0;
+}
+
+.luxury-scrollbar::-webkit-scrollbar-thumb {
+  background: #050505;
+  border-radius: 0px !important;
+}
+
+.luxury-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #E61919;
+}
+
+.glass-luxury {
+  background: rgba(244, 244, 240, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border-bottom: 1px solid #050505 !important;
+}
+
+/* Fluid Typography using clamp() for screen consistency */
+.theme-luxury .text-luxury-hero {
+  font-size: clamp(2.5rem, 8vw, 6.5rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.05em !important;
+  line-height: 0.9 !important;
+  text-transform: uppercase !important;
+}
+
+.theme-luxury .text-luxury-heading {
+  font-size: clamp(1.6rem, 4.5vw, 3rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 0.95 !important;
+  text-transform: uppercase !important;
+}
+
+.theme-luxury .text-luxury-subheading {
+  font-family: var(--font-mono), monospace !important;
+  font-size: clamp(0.7rem, 1.5vw, 0.85rem) !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  color: rgba(5, 5, 5, 0.65) !important;
 }

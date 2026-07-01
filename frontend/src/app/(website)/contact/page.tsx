@@ -13,7 +13,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 md:px-12 pt-28 md:pt-36 pb-12 md:pb-24 space-y-24 font-sans">
+    <div className="max-w-7xl mx-auto px-6 md:px-12 pt-36 md:pt-44 pb-12 md:pb-24 space-y-24 font-sans">
       
       {/* Editorial Header */}
       <div className="max-w-3xl space-y-4">

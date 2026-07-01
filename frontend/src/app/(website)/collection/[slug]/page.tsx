@@ -1,27 +1,40 @@
+"use client";
+
+import { use } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { LUXURY_COLLECTIONS, LUXURY_PRODUCTS } from "@/constants/mockData";
 import { ArrowLeft } from "lucide-react";
+import { useDbData } from "@/hooks/useDbData";
 
 interface CollectionDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export default async function CollectionDetailPage({
+export default function CollectionDetailPage({
   params,
 }: CollectionDetailPageProps) {
-  const { slug } = await params;
-  const collection = LUXURY_COLLECTIONS.find((c) => c.slug === slug);
+  const { slug } = use(params);
+  const { collections, products: allProducts, loading } = useDbData();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh] pt-36 md:pt-44">
+        <div className="w-6 h-6 rounded-full border-2 border-luxury-gold border-t-transparent animate-spin" />
+      </div>
+    );
+  }
+
+  const collection = collections.find((c) => c.slug === slug);
 
   if (!collection) {
     notFound();
   }
 
   // Filter products by collection slug
-  const products = LUXURY_PRODUCTS.filter((p) => p.collectionSlug === slug);
+  const products = allProducts.filter((p) => p.collectionSlug === slug);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 md:px-12 pt-28 md:pt-36 pb-12 md:pb-24 space-y-16">
+    <div className="max-w-7xl mx-auto px-6 md:px-12 pt-36 md:pt-44 pb-12 md:pb-24 space-y-16">
       
       {/* Back Button */}
       <Link

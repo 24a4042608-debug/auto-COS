@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ImportExportController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\ProductController;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/contact',    [ContactController::class, 'send']);
 Route::get('/import-db', function () {
     try {
         // Clear all existing tables before import to avoid key conflicts

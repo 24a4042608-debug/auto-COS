@@ -11,7 +11,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with(['category:id,name', 'brand:id,name', 'supplier:id,name'])
+        $query = Product::with(['category:id,name', 'brand:id,name', 'supplier:id,name', 'assets'])
             ->withCount('variants');
 
         if ($search = $request->search) {

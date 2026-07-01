@@ -1,122 +1,157 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import MagneticButton from "@/components/ui/luxury/MagneticButton";
+import { Play, ArrowUp, Globe, MessageCircle, Video } from "lucide-react";
+
+
+const footerLinks = {
+  browse: [
+    { name: "Home", href: "/" },
+    { name: "Movies", href: "/products" },
+    { name: "Series", href: "/collections" },
+    { name: "Lookbook", href: "/lookbook" },
+    { name: "Journal", href: "/journal" },
+  ],
+  company: [
+    { name: "About VHSM", href: "/about" },
+    { name: "Contact", href: "/contact" },
+    { name: "Careers", href: "#" },
+    { name: "Press Kit", href: "#" },
+  ],
+  legal: [
+    { name: "Privacy Policy", href: "#" },
+    { name: "Terms of Service", href: "#" },
+    { name: "Cookie Settings", href: "#" },
+  ],
+};
 
 export default function Footer() {
-  const scrollUp = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
-    <footer className="bg-white border-t border-luxury-border pt-20 pb-12 mt-20">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-16">
+    <footer className="bg-[#05050A] border-t border-white/[0.06] mt-24 md:mt-36">
+      <div className="max-w-screen-2xl mx-auto px-6 md:px-12">
+        
+        {/* Top Section */}
+        <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           
-          {/* Brand Manifesto Column */}
-          <div className="lg:col-span-4 space-y-6">
-            <span className="font-serif text-lg tracking-[0.2em] uppercase text-luxury-text-primary">
-              VHSM ATELIER
-            </span>
-            <p className="text-sm text-luxury-text-secondary leading-relaxed font-sans max-w-xs">
-              Designing structural narratives. We create garment silhouettes that challenge the boundaries of tailored volume, craftsmanship, and raw materials.
+          {/* Brand */}
+          <div className="lg:col-span-2 space-y-5">
+            <Link href="/" className="flex items-center gap-2 group w-fit">
+              <div className="w-9 h-9 bg-[#E50914] flex items-center justify-center rounded-sm">
+                <Play className="w-4 h-4 text-white fill-white" />
+              </div>
+              <span className="text-white font-bold text-2xl tracking-tight group-hover:text-[#E50914] transition-colors">
+                VHSM<span className="text-[#E50914]">.</span>PLAY
+              </span>
+            </Link>
+            <p className="text-zinc-500 text-sm leading-relaxed max-w-xs">
+              A cinematic atelier. We design garment silhouettes that challenge the boundaries of tailored volume, craftsmanship, and raw material origins — presented as seasonal campaigns.
             </p>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-4 pt-2">
+              {[
+                { Icon: Globe, href: "https://instagram.com", label: "Instagram" },
+                { Icon: MessageCircle, href: "https://twitter.com", label: "Twitter" },
+                { Icon: Video, href: "https://youtube.com", label: "YouTube" },
+              ].map(({ Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
+                  className="w-9 h-9 border border-white/10 flex items-center justify-center text-zinc-500 hover:text-white hover:border-[#E50914]/60 transition-all rounded-sm"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
           </div>
 
-          {/* Navigation Links Column */}
-          <div className="lg:col-span-2 space-y-4">
-            <h5 className="text-[10px] uppercase tracking-widest text-luxury-text-secondary">
-              Navigation
-            </h5>
-            <ul className="space-y-2.5 text-xs">
-              {["Collections", "Products", "Lookbook", "Journal", "About", "Contact"].map((item) => (
-                <li key={item}>
+          {/* Browse */}
+          <div className="space-y-4">
+            <h5 className="text-zinc-300 text-xs font-semibold tracking-widest uppercase">Browse</h5>
+            <ul className="space-y-3">
+              {footerLinks.browse.map((link) => (
+                <li key={link.name}>
                   <Link
-                    href={`/${item.toLowerCase()}`}
-                    className="text-luxury-text-primary hover:text-luxury-gold transition-colors duration-300 focus:outline-none"
+                    href={link.href}
+                    className="text-zinc-500 text-sm hover:text-white transition-colors"
                   >
-                    {item}
+                    {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Connect Column */}
-          <div className="lg:col-span-2 space-y-4">
-            <h5 className="text-[10px] uppercase tracking-widest text-luxury-text-secondary">
-              Connect
-            </h5>
-            <ul className="space-y-2.5 text-xs">
-              {[
-                { name: "Instagram", href: "https://instagram.com" },
-                { name: "Pinterest", href: "https://pinterest.com" },
-                { name: "Vimeo", href: "https://vimeo.com" },
-                { name: "Journal RSS", href: "#" },
-              ].map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center text-luxury-text-primary hover:text-luxury-gold transition-colors duration-300 group focus:outline-none"
+          {/* Company */}
+          <div className="space-y-4">
+            <h5 className="text-zinc-300 text-xs font-semibold tracking-widest uppercase">Company</h5>
+            <ul className="space-y-3">
+              {footerLinks.company.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-zinc-500 text-sm hover:text-white transition-colors"
                   >
-                    {item.name}
-                    <ArrowUpRight className="w-3 h-3 ml-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 stroke-[1.5]" />
-                  </a>
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Newsletter Column */}
-          <div className="lg:col-span-4 space-y-6">
-            <h5 className="text-[10px] uppercase tracking-widest text-luxury-text-secondary">
-              Atelier Correspondence
-            </h5>
-            <p className="text-xs text-luxury-text-secondary leading-relaxed">
-              Subscribe to receive notification of new seasonal campaigns, lookbooks, and private viewings.
-            </p>
-            <form onSubmit={(e) => e.preventDefault()} className="flex items-center border-b border-luxury-text-primary pb-1 group focus-within:border-luxury-gold transition-colors duration-300">
+          {/* Newsletter */}
+          <div className="space-y-4">
+            <h5 className="text-zinc-300 text-xs font-semibold tracking-widest uppercase">Stay Updated</h5>
+            <p className="text-zinc-500 text-sm leading-relaxed">Get notified when new campaigns and releases drop.</p>
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
               <input
                 type="email"
-                placeholder="Enter email address"
-                className="w-full bg-transparent text-xs text-luxury-text-primary placeholder:text-luxury-text-secondary/50 focus:outline-none py-1"
+                placeholder="your@email.com"
+                className="w-full bg-zinc-900 border border-white/10 text-white text-sm px-4 py-2.5 rounded-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#E50914]/50 transition-colors"
                 required
               />
               <button
                 type="submit"
-                className="text-xs tracking-wider uppercase text-luxury-text-primary hover:text-luxury-gold transition-colors ml-2 focus:outline-none"
+                className="w-full bg-[#E50914] hover:bg-[#f40612] text-white text-sm font-medium py-2.5 rounded-sm transition-colors cursor-pointer"
               >
                 Subscribe
               </button>
             </form>
           </div>
-
         </div>
 
-        {/* Big Text branding */}
-        <div className="border-t border-luxury-border/60 pt-12 flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="text-[10px] text-luxury-text-secondary tracking-widest uppercase">
-            © 2026 VHSM ATELIER. All rights reserved.
-          </span>
-          
-          {/* Scroll to Top */}
-          <button
-            onClick={scrollUp}
-            className="text-[10px] tracking-widest uppercase text-luxury-text-secondary hover:text-luxury-gold transition-colors focus:outline-none flex items-center gap-1 group"
-          >
-            Scroll to Top
-            <span className="block translate-y-0 group-hover:-translate-y-0.5 transition-transform duration-300">
-              ↑
+        {/* Bottom Bar */}
+        <div className="border-t border-white/[0.06] py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-6">
+            <span className="text-zinc-600 text-xs">
+              © 2026 VHSM Atelier. All rights reserved.
             </span>
+            {footerLinks.legal.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-zinc-600 text-xs hover:text-zinc-400 transition-colors"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-1.5 text-xs text-zinc-600 hover:text-white transition-colors cursor-pointer group"
+          >
+            Back to Top
+            <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
           </button>
         </div>
 
-        <div className="mt-12 text-center select-none opacity-[0.02]">
-          <span className="font-serif text-[12vw] tracking-[0.2em] text-black leading-none block uppercase">
-            ATELIER
+        {/* Giant watermark */}
+        <div className="py-8 text-center select-none overflow-hidden">
+          <span className="text-[8vw] font-black text-white/[0.025] tracking-tight leading-none block uppercase">
+            VHSM PLAY
           </span>
         </div>
       </div>

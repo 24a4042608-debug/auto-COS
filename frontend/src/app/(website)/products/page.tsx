@@ -3,19 +3,20 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { LUXURY_PRODUCTS, LUXURY_COLLECTIONS } from "@/constants/mockData";
+import { useDbData } from "@/hooks/useDbData";
 
 export default function ProductsPage() {
+  const { products, collections, loading } = useDbData();
   const [selectedCollection, setSelectedCollection] = useState<string>("all");
   const [selectedSize, setSelectedSize] = useState<string>("all");
 
   // Get all sizes dynamically
   const allSizes = Array.from(
-    new Set(LUXURY_PRODUCTS.flatMap((p) => p.sizes))
+    new Set(products.flatMap((p) => p.sizes))
   ).sort();
 
   // Filter products based on state
-  const filteredProducts = LUXURY_PRODUCTS.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     const matchesCollection =
       selectedCollection === "all" ||
       product.collectionSlug === selectedCollection;
@@ -25,7 +26,7 @@ export default function ProductsPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-6 md:px-12 pt-28 md:pt-36 pb-12 md:pb-24 space-y-16">
+    <div className="max-w-7xl mx-auto px-6 md:px-12 pt-36 md:pt-44 pb-12 md:pb-24 space-y-16">
       
       {/* Header */}
       <div className="max-w-3xl space-y-4">
@@ -41,64 +42,64 @@ export default function ProductsPage() {
       </div>
 
       {/* Filter Panels */}
-      <div className="border-y border-luxury-border py-6 flex flex-col md:flex-row justify-between gap-6 items-baseline font-sans text-xs">
+      <div className="border-y border-[#050505] py-6 flex flex-col md:flex-row justify-between gap-6 items-baseline font-mono text-[10px]">
         
         {/* Collection Filter */}
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-          <span className="text-luxury-text-secondary uppercase tracking-widest text-[10px]">
-            Campaign:
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+          <span className="text-luxury-text-secondary uppercase tracking-widest">
+            [ CAMPAIGN ]:
           </span>
           <button
             onClick={() => setSelectedCollection("all")}
-            className={`uppercase tracking-wider pb-1 transition-all duration-300 focus:outline-none ${
+            className={`uppercase tracking-wider transition-colors duration-300 focus:outline-none cursor-pointer ${
               selectedCollection === "all"
-                ? "border-b border-luxury-text-primary text-luxury-text-primary font-medium"
-                : "text-luxury-text-secondary hover:text-luxury-text-primary"
+                ? "text-[#E61919] font-bold"
+                : "text-luxury-text-secondary hover:text-[#050505]"
             }`}
           >
-            All
+            [ ALL ]
           </button>
-          {LUXURY_COLLECTIONS.map((c) => (
+          {collections.map((c) => (
             <button
               key={c.slug}
               onClick={() => setSelectedCollection(c.slug)}
-              className={`uppercase tracking-wider pb-1 transition-all duration-300 focus:outline-none ${
+              className={`uppercase tracking-wider transition-colors duration-300 focus:outline-none cursor-pointer ${
                 selectedCollection === c.slug
-                  ? "border-b border-luxury-text-primary text-luxury-text-primary font-medium"
-                  : "text-luxury-text-secondary hover:text-luxury-text-primary"
+                  ? "text-[#E61919] font-bold"
+                  : "text-luxury-text-secondary hover:text-[#050505]"
               }`}
             >
-              {c.name.split(" ")[0]} {/* Shortened names for space */}
+              [ {c.name.split(" ")[0]} ]
             </button>
           ))}
         </div>
 
         {/* Size Filter */}
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-          <span className="text-luxury-text-secondary uppercase tracking-widest text-[10px]">
-            Sizes:
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+          <span className="text-luxury-text-secondary uppercase tracking-widest">
+            [ SIZE ]:
           </span>
           <button
             onClick={() => setSelectedSize("all")}
-            className={`uppercase tracking-wider pb-1 transition-all duration-300 focus:outline-none ${
+            className={`uppercase tracking-wider transition-colors duration-300 focus:outline-none cursor-pointer ${
               selectedSize === "all"
-                ? "border-b border-luxury-text-primary text-luxury-text-primary font-medium"
-                : "text-luxury-text-secondary hover:text-luxury-text-primary"
+                ? "text-[#E61919] font-bold"
+                : "text-luxury-text-secondary hover:text-[#050505]"
             }`}
           >
-            All
+            [ ALL ]
           </button>
           {allSizes.map((size) => (
             <button
               key={size}
               onClick={() => setSelectedSize(size)}
-              className={`uppercase tracking-wider pb-1 transition-all duration-300 focus:outline-none ${
+              className={`uppercase tracking-wider transition-colors duration-300 focus:outline-none cursor-pointer ${
                 selectedSize === size
-                  ? "border-b border-luxury-text-primary text-luxury-text-primary font-medium"
-                  : "text-luxury-text-secondary hover:text-luxury-text-primary"
+                  ? "text-[#E61919] font-bold"
+                  : "text-luxury-text-secondary hover:text-[#050505]"
               }`}
             >
-              {size}
+              [ {size} ]
             </button>
           ))}
         </div>
@@ -129,7 +130,7 @@ export default function ProductsPage() {
                 >
                   <Link
                     href={`/product/${product.slug}`}
-                    className="block relative aspect-[3/4] overflow-hidden mb-6 bg-white border border-luxury-border/60 rounded-sm"
+                    className="block relative aspect-[3/4] overflow-hidden mb-6 bg-white border border-[#050505]"
                   >
                     <img
                       src={product.images[0]}
@@ -146,15 +147,15 @@ export default function ProductsPage() {
                   </Link>
 
                   <div className="flex justify-between items-baseline gap-2">
-                    <h3 className="font-serif text-lg text-luxury-text-primary tracking-wide group-hover:text-luxury-gold transition-colors duration-300">
+                    <h3 className="font-sans font-bold text-base text-luxury-text-primary tracking-tight uppercase group-hover:text-[#E61919] transition-colors duration-300">
                       <Link href={`/product/${product.slug}`}>{product.name}</Link>
                     </h3>
-                    <span className="text-xs text-luxury-text-secondary font-sans">
-                      {product.price}
+                    <span className="text-xs text-luxury-text-secondary font-mono">
+                      [ {product.price} ]
                     </span>
                   </div>
 
-                  <span className="text-[10px] text-luxury-text-secondary tracking-wider mt-1.5 font-sans">
+                  <span className="text-[9px] text-luxury-text-secondary tracking-widest mt-1.5 font-mono">
                     {product.fabric.split(".")[0]}
                   </span>
                 </motion.div>

@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ───────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #08080C;
+  color: #F4F4F5;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(229,9,20,0.4); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(229,9,20,0.7); }
+
+/* ─── Cinematic Streaming Theme ──────────────────────── */
+.theme-luxury {
+  background-color: #08080C;
+  color: #F4F4F5;
+}
+
+/* Glass nav */
+.glass-luxury {
+  background: rgba(8,8,12,0.92) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* Glass streaming card */
+.glass-streaming {
+  background: rgba(17,17,21,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Horizontal scroll — hide scrollbar */
+.horizontal-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.horizontal-scroll::-webkit-scrollbar { display: none; }
+
+/* Red glow */
+.glow-red {
+  box-shadow: 0 0 25px rgba(229,9,20,0.35), 0 0 60px rgba(229,9,20,0.15);
+}
+
+/* Movie card gradient overlay */
+.movie-card-overlay {
+  background: linear-gradient(to top, rgba(8,8,12,0.95) 0%, rgba(8,8,12,0.5) 50%, transparent 100%);
+}
+
+/* Luxury scrollbar utility */
+.luxury-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+.luxury-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.luxury-scrollbar::-webkit-scrollbar-thumb { background: rgba(229,9,20,0.5); border-radius: 2px; }
+.luxury-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(229,9,20,0.8); }
+
+/* Sidebar scrollbar */
+.sidebar-scrollbar::-webkit-scrollbar { width: 4px; }
+.sidebar-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
