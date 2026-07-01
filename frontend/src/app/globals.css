@@ -12,6 +12,18 @@
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
+
+  --color-luxury-bg: #FAFAFA;
+  --color-luxury-surface: #FFFFFF;
+  --color-luxury-text-primary: #111111;
+  --color-luxury-text-secondary: #666666;
+  --color-luxury-border: #EAEAEA;
+  --color-luxury-gold: #D6B36A;
+  --color-luxury-success: #3BB273;
+  --color-luxury-error: #D64545;
+
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
 }
 
 
@@ -631,4 +643,43 @@ html.light .border-white\/\[0\.05\],
 html.light .border-white\/\[0\.06\],
 html.light .border-white\/\[0\.08\] {
   border-color: #e2e8f0 !important;
+}
+
+/* ─── Luxury Showcase Styles ────────────────────────── */
+.theme-luxury {
+  background-color: #FAFAFA;
+  color: #111111;
+  font-family: var(--font-sans);
+}
+
+.luxury-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.luxury-scrollbar::-webkit-scrollbar-track {
+  background: #FAFAFA;
+}
+
+.luxury-scrollbar::-webkit-scrollbar-thumb {
+  background: #D6B36A;
+  border-radius: 3px;
+}
+
+.luxury-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #b59452;
+}
+
+/* Hide standard cursor when custom cursor is active on desktop */
+@media (min-width: 1024px) {
+  .custom-cursor-active,
+  .custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+
+.glass-luxury {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
