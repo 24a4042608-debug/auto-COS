@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Search, MapPin, Calendar, Users, Star, SlidersHorizontal, X, ChevronRight, Zap, DollarSign } from 'lucide-react';
-import { SERVICES, BOOKING_CATEGORIES, FEATURED_SERVICES } from '@/constants/bookingData';
+import { Search, MapPin, Calendar, Users, Star, SlidersHorizontal, X, ChevronRight, Zap, DollarSign, Clock, ArrowRight } from 'lucide-react';
+import { SERVICES, BOOKING_CATEGORIES, FEATURED_SERVICES, BLOG_POSTS, type BlogPost } from '@/constants/bookingData';
 import SharedFooter from '@/components/SharedFooter';
 
 function formatPrice(price: number) {
@@ -49,6 +49,41 @@ function ServiceCard({ service, index = 0 }: { service: typeof SERVICES[0]; inde
             <div className="flex items-center gap-1.5">
               <img src={service.hostAvatar} alt={service.host} className="w-6 h-6 rounded-full object-cover" />
               <span className="text-slate-400 text-xs">{service.host.split(' ').slice(-2).join(' ')}</span>
+            </div>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+function BlogCard({ post, index = 0 }: { post: BlogPost; index?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.08, duration: 0.4 }}
+    >
+      <Link to={`/booking/blog/${post.slug}`} className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-100 transition-all duration-300 hover:-translate-y-1">
+        <div className="relative aspect-[16/9] overflow-hidden">
+          <img src={post.thumbnail} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          <div className="absolute top-3 left-3">
+            <span className="bg-white/90 backdrop-blur-sm text-emerald-700 text-[10px] font-bold px-2.5 py-1 rounded-full">
+              {post.category}
+            </span>
+          </div>
+        </div>
+        <div className="p-4 space-y-3">
+          <h3 className="font-bold text-slate-800 leading-snug group-hover:text-emerald-600 transition-colors line-clamp-2">{post.title}</h3>
+          <p className="text-slate-500 text-sm line-clamp-2 leading-relaxed">{post.excerpt}</p>
+          <div className="flex items-center justify-between pt-1 border-t border-slate-50">
+            <div className="flex items-center gap-2">
+              <img src={post.authorAvatar} alt={post.author} className="w-6 h-6 rounded-full object-cover" />
+              <span className="text-slate-500 text-xs">{post.author}</span>
+            </div>
+            <div className="flex items-center gap-1 text-slate-400 text-xs">
+              <Clock className="w-3 h-3" />
+              <span>{post.readTime} phút đọc</span>
             </div>
           </div>
         </div>
@@ -291,6 +326,26 @@ export default function BookingHomePage() {
         </div>
       )}
 
+      {/* ── local outdoor experiences ── */}
+      {activeCategory === 'all' && !searchQuery && !location && (
+        <div className="max-w-7xl mx-auto px-6 mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="font-black text-xl text-slate-800">🌟 Trải nghiệm độc đáo & Tour dã ngoại</h2>
+              <p className="text-slate-500 text-xs mt-0.5">Khám phá hoạt động ngoài trời lý thú, các tour ẩm thực, nghệ thuật cùng hướng dẫn viên bản địa</p>
+            </div>
+            <button onClick={() => setActiveCategory('experience')} className="text-emerald-600 text-xs font-bold hover:underline flex items-center gap-0.5">
+              Xem tất cả <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {SERVICES.filter(s => s.category === 'experience').slice(0, 3).map((service, i) => (
+              <ServiceCard key={service.id} service={service} index={i} />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ── All Services ── */}
       <div className="max-w-7xl mx-auto px-6 pb-16">
         <div className="flex items-center justify-between mb-6">
@@ -313,7 +368,82 @@ export default function BookingHomePage() {
         )}
       </div>
 
-      {/* Back */}
+      {/* ── Blog / Articles Section ── */}
+      <div className="max-w-7xl mx-auto px-6 pb-16">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="font-black text-xl text-slate-800">📖 Cẩm nang du lịch & trải nghiệm</h2>
+            <p className="text-slate-500 text-sm mt-1">Bài viết hay, mẹo booking và review từ cộng đồng</p>
+          </div>
+          <Link to="/booking/blog" className="flex items-center gap-1.5 text-emerald-600 text-sm font-semibold hover:underline">
+            Xem tất cả <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        {/* Featured blog post (large) */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 mb-5">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="lg:col-span-3"
+          >
+            <Link to={`/booking/blog/${BLOG_POSTS[0].slug}`} className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-100 transition-all duration-300">
+              <div className="relative aspect-[16/9] overflow-hidden">
+                <img src={BLOG_POSTS[0].thumbnail} alt={BLOG_POSTS[0].title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <span className="bg-emerald-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">{BLOG_POSTS[0].category}</span>
+                  <h3 className="font-black text-white text-xl mt-2 leading-snug group-hover:text-emerald-300 transition-colors">{BLOG_POSTS[0].title}</h3>
+                  <p className="text-white/70 text-sm mt-1 line-clamp-2">{BLOG_POSTS[0].excerpt}</p>
+                  <div className="flex items-center gap-3 mt-3">
+                    <img src={BLOG_POSTS[0].authorAvatar} alt={BLOG_POSTS[0].author} className="w-7 h-7 rounded-full border-2 border-white/30" />
+                    <span className="text-white/80 text-xs">{BLOG_POSTS[0].author}</span>
+                    <span className="text-white/50 text-xs flex items-center gap-1"><Clock className="w-3 h-3" />{BLOG_POSTS[0].readTime} phút</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+
+          <div className="lg:col-span-2 flex flex-col gap-4">
+            {BLOG_POSTS.slice(1, 3).map((post, i) => (
+              <motion.div key={post.id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: (i + 1) * 0.1 }}>
+                <Link to={`/booking/blog/${post.slug}`} className="group flex gap-4 bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-emerald-200 transition-all p-3 shadow-sm hover:shadow-md">
+                  <div className="w-24 h-20 rounded-xl overflow-hidden flex-shrink-0">
+                    <img src={post.thumbnail} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  </div>
+                  <div className="flex-1 min-w-0 py-1">
+                    <span className="text-emerald-600 text-[10px] font-bold uppercase tracking-wider">{post.category}</span>
+                    <h4 className="font-bold text-slate-800 text-sm leading-snug mt-0.5 line-clamp-2 group-hover:text-emerald-600 transition-colors">{post.title}</h4>
+                    <div className="flex items-center gap-1 text-slate-400 text-xs mt-1.5">
+                      <Clock className="w-3 h-3" /><span>{post.readTime} phút đọc</span>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Grid of remaining blog posts */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {BLOG_POSTS.slice(3).map((post, i) => <BlogCard key={post.id} post={post} index={i} />)}
+        </div>
+
+        {/* Tags cloud */}
+        <div className="mt-8 p-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <p className="text-slate-500 text-sm font-semibold mb-3">🏷️ Chủ đề phổ biến</p>
+          <div className="flex flex-wrap gap-2">
+            {['Đà Lạt', 'Hà Nội', 'Hội An', 'Đà Nẵng', 'Sapa', 'Hạ Long', 'Wellness', 'Ẩm thực', 'Du lịch bụi', 'Review', 'Tiết kiệm', 'Sang trọng', 'Đám cưới', 'Team Building'].map(tag => (
+              <button key={tag} className="bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-600 hover:text-emerald-700 text-xs px-3 py-1.5 rounded-full transition-all font-medium">
+                {tag}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
       <SharedFooter theme="light" accentColor="#059669" platformName="BookIt" />
     </div>
   );

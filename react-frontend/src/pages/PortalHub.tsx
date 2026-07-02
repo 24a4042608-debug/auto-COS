@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Play, Sparkles, Star, Users, Film, BookOpen } from 'lucide-react';
+import { ArrowRight, Play, Sparkles, Star, Users, Film, BookOpen, ChevronRight } from 'lucide-react';
 import SharedFooter from '@/components/SharedFooter';
 
 const PLATFORMS = [
@@ -90,6 +91,80 @@ const PLATFORMS = [
   },
 ];
 
+const BUSINESS_ARTICLES = [
+  {
+    id: 'ba1',
+    title: 'Hệ sinh thái Số hóa & Tương lai Vận hành Doanh nghiệp Việt',
+    excerpt: 'Làm thế nào để tích hợp 6 nền tảng kinh doanh thiết yếu giúp cắt giảm tới 40% chi phí hạ tầng và tối ưu hóa trải nghiệm khách hàng đa kênh.',
+    category: 'Chuyển đổi số',
+    date: '28 Tháng 6, 2025',
+    author: 'CEO VHSM Group',
+  },
+  {
+    id: 'ba2',
+    title: 'Atelier và Chiến lược Thời trang Bền vững 2026',
+    excerpt: 'Ứng dụng các vật liệu sinh học tự phân hủy và tối ưu hóa chuỗi cung ứng sản xuất xanh để đáp ứng tiêu chuẩn bền vững khắt khe từ Châu Âu.',
+    category: 'Phát triển bền vững',
+    date: '22 Tháng 6, 2025',
+    author: 'Director of Atelier',
+  },
+  {
+    id: 'ba3',
+    title: 'EduHub Đạt Mốc 10.000 Học Viên Chuyên Ngành Kỹ Thuật Số',
+    excerpt: 'Chương trình đào tạo công nghệ hợp tác với các tập đoàn đa quốc gia nhằm nâng cao chất lượng nguồn nhân lực trẻ trong kỷ nguyên AI.',
+    category: 'Giáo dục',
+    date: '15 Tháng 6, 2025',
+    author: 'Dean of EduHub',
+  },
+  {
+    id: 'ba4',
+    title: 'ACOS Admin: Tự động hóa Logistics với Giải pháp Trí tuệ Nhân tạo',
+    excerpt: 'Hệ thống quản trị đa website tích hợp mô hình dự báo nhu cầu thị trường tự động giúp tối ưu 50% tồn kho cho các đối tác bán lẻ.',
+    category: 'Giải pháp Công nghệ',
+    date: '10 Tháng 6, 2025',
+    author: 'CTO VHSM Tech',
+  },
+];
+
+const FAQS = [
+  { question: 'Hệ sinh thái VHSM có thể chạy riêng lẻ từng nền tảng được không?', answer: 'Có, các nền tảng (Fashion, Film, Education, News, Booking, Vlog) đều được thiết kế độc lập. Doanh nghiệp có thể lựa chọn kích hoạt chỉ một hoặc tất cả các kênh tùy theo nhu cầu.' },
+  { question: 'Làm thế nào để phân quyền quản trị đa kênh?', answer: 'ACOS Admin tích hợp hệ thống phân quyền (RBAC) chi tiết. Bạn có thể phân quyền cộng tác viên viết bài tin tức, quản trị viên quản lý sản phẩm, hoặc hỗ trợ kỹ thuật mà không sợ ảnh hưởng đến dữ liệu toàn hệ thống.' },
+  { question: 'Thời gian triển khai và khả năng mở rộng như thế nào?', answer: 'Nhờ cấu trúc mã nguồn mở gọn gàng bằng React 19 và Vite, hệ thống có khả năng deploy tức thì lên Vercel và mở rộng quy mô linh hoạt mà không gặp trở ngại về hạ tầng.' },
+  { question: 'Dữ liệu giữa các nền tảng được đồng bộ ra sao?', answer: 'Mọi dữ liệu từ sản phẩm (Fashion) đến bài học (Education) đều kết nối thông qua hệ thống API backend tập trung, giúp tự động hiển thị chéo và đồng nhất trên toàn bộ website.' }
+];
+
+function FaqAccordionItem({ question, answer }: { question: string; answer: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="border-b border-white/[0.05] py-4">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between text-left text-sm font-bold text-white hover:text-violet-400 transition-colors py-2 focus:outline-none"
+      >
+        <span>{question}</span>
+        <span className={`text-xs transform transition-transform duration-250 ${isOpen ? 'rotate-180 text-violet-400' : 'text-white/40'}`}>
+          ▼
+        </span>
+      </button>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <p className="text-white/40 text-xs leading-relaxed pt-2 pb-4">
+              {answer}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 const containerVariants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.08 } },
@@ -102,15 +177,39 @@ const cardVariants = {
 
 export default function PortalHub() {
   return (
-    <div className="min-h-screen bg-[#050508] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#050508] text-white overflow-x-hidden relative">
+
+      {/* ── Top Floating Header ── */}
+      <header className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-7xl z-50 bg-black/40 border border-white/[0.08] backdrop-blur-md py-3 px-6 rounded-full flex items-center justify-between pointer-events-auto">
+        <div className="flex items-center gap-3">
+          <img src="/logo.png" alt="VHSM Logo" className="h-6 w-auto object-contain" />
+          <span className="text-white font-black text-sm tracking-[0.2em] uppercase font-mono">VHSM</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <Link to="/admin" className="text-xs text-white/50 hover:text-white transition-colors font-medium">Admin</Link>
+          <a href="#platforms" className="bg-white/10 hover:bg-white/15 text-white text-[11px] font-bold px-4 py-2 rounded-full border border-white/10 transition-all">
+            Khám phá
+          </a>
+        </div>
+      </header>
+
+      {/* ── Tech Background Image ── */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-30">
+        <img
+          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80"
+          alt="Tech Background"
+          className="w-full h-full object-cover fixed top-0 left-0"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050508]/80 via-[#050508]/90 to-[#050508]" />
+      </div>
 
       {/* ── Hero ── */}
-      <div className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20 pb-16">
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 pt-20 pb-16">
         {/* Background glow orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-600/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-[120px]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/5 rounded-full blur-[180px]" />
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-600/15 rounded-full blur-[120px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-600/15 rounded-full blur-[120px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[180px]" />
           {/* Floating particles */}
           {Array.from({ length: 20 }).map((_, i) => (
             <motion.div
@@ -206,8 +305,48 @@ export default function PortalHub() {
         </motion.div>
       </div>
 
+      {/* ── Core Ecosystem Features ── */}
+      <div className="max-w-7xl mx-auto px-6 py-20 relative z-10 border-t border-white/[0.05]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+          <div className="space-y-6">
+            <span className="text-xs font-mono tracking-[0.3em] uppercase text-violet-400">GIẢI PHÁP ĐỒNG BỘ</span>
+            <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">Sức mạnh của sự thống nhất</h2>
+            <p className="text-white/50 text-sm leading-relaxed">
+              Các nền tảng của VHSM kết nối chặt chẽ qua một tài khoản duy nhất (Single Sign-On), tự động đồng bộ hóa dữ liệu thời gian thực và quản lý tập trung từ hệ thống ACOS Admin.
+            </p>
+            <div className="space-y-3 pt-2">
+              {[
+                'Đồng bộ sản phẩm, nội dung và khách hàng trên 6 kênh',
+                'Phân tích chỉ số tăng trưởng tự động bằng AI',
+                'Bảo mật mã hóa đầu cuối chuẩn bảo mật quốc tế',
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2.5 text-xs text-white/70">
+                  <span className="w-5 h-5 bg-violet-500/15 border border-violet-500/30 rounded-full flex items-center justify-center text-violet-400 font-bold">✓</span>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {[
+              { title: 'Tốc độ siêu việt', desc: 'Sử dụng công nghệ Vite/React thế hệ mới, tối ưu hóa kích thước gói tin giúp tải trang chỉ dưới 0.5s.', icon: '⚡' },
+              { title: 'Đa kênh tập trung', desc: 'Không cần đăng nhập nhiều nơi. Quản trị bán hàng, viết bài, phát phim, tạo khóa học chung một bảng điều khiển.', icon: '🎯' },
+              { title: 'Thiết kế tinh tế', desc: 'Giao diện phong cách tối giản sang trọng, tập trung tối đa vào trải nghiệm người dùng cuối.', icon: '🎨' },
+              { title: 'Hỗ trợ 24/7', desc: 'Mọi thắc mắc và sự cố kỹ thuật đều được hỗ trợ xử lý tức thời bởi đội ngũ kỹ sư chuyên nghiệp.', icon: '💬' },
+            ].map((feat, idx) => (
+              <div key={idx} className="bg-white/[0.015] border border-white/[0.05] hover:border-white/[0.1] rounded-2xl p-6 transition-all duration-300">
+                <div className="text-2xl mb-3">{feat.icon}</div>
+                <h4 className="text-white font-bold text-base mb-2">{feat.title}</h4>
+                <p className="text-white/40 text-xs leading-relaxed">{feat.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* ── Platform Grid ── */}
-      <div className="max-w-7xl mx-auto px-6 pb-24">
+      <div id="platforms" className="max-w-7xl mx-auto px-6 pb-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -239,8 +378,7 @@ export default function PortalHub() {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-90"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
-                    {/* Icon */}
-                    <div className="absolute top-4 left-4 text-3xl">{platform.icon}</div>
+                    {/* Emojis removed */}
                     {/* Name */}
                     <div className="absolute bottom-4 left-4">
                       <span className={`text-xs font-mono tracking-[0.25em] uppercase ${platform.textAccent}`}>
@@ -274,6 +412,21 @@ export default function PortalHub() {
         </motion.div>
       </div>
 
+      {/* ── Partner & Trust Banner ── */}
+      <div className="border-t border-white/[0.05] bg-white/[0.01] py-12 px-6 overflow-hidden relative z-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="text-center md:text-left flex-shrink-0">
+            <span className="text-[10px] tracking-[0.2em] uppercase text-white/30 block mb-1">ĐỐI TÁC CHIẾN LƯỢC</span>
+            <h4 className="text-sm font-bold text-white/70">Đồng hành cùng sự phát triển của các thương hiệu hàng đầu</h4>
+          </div>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-30 grayscale hover:opacity-55 hover:grayscale-0 transition-all duration-500">
+            {['Vercel', 'Stripe', 'React', 'Tailwind', 'NextJS', 'GoogleCloud'].map(brand => (
+              <span key={brand} className="text-sm font-black text-white/80 font-mono tracking-wider">{brand}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* ── Stats Strip ── */}
       <div className="border-y border-white/[0.06] py-10 px-6">
         <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -289,6 +442,68 @@ export default function PortalHub() {
               <div className="text-3xl font-black text-white">{value}<span className="text-violet-400">{suffix}</span></div>
               <div className="text-white/40 text-xs mt-1 uppercase tracking-wider">{label}</div>
             </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Business Insights Section ── */}
+      <div className="max-w-7xl mx-auto px-6 pb-24 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <span className="text-xs tracking-[0.3em] uppercase text-violet-400 block mb-3">TIN TỨC & SỰ KIỆN</span>
+          <h2 className="text-3xl md:text-4xl font-black text-white">Câu chuyện doanh nghiệp</h2>
+          <p className="text-white/40 text-sm mt-3 max-w-lg mx-auto">Các bài phân tích sâu sắc, xu hướng công nghệ và giải pháp phát triển bền vững từ VHSM Group.</p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {BUSINESS_ARTICLES.map((article, index) => (
+            <motion.div
+              key={article.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="group bg-white/[0.02] hover:bg-white/[0.04] border border-white/[0.08] hover:border-violet-500/30 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[10px] font-mono tracking-wider text-violet-400 uppercase bg-violet-500/10 px-2.5 py-1 rounded">
+                    {article.category}
+                  </span>
+                  <span className="text-[11px] text-white/30">{article.date}</span>
+                </div>
+                <h3 className="text-white font-bold text-base mb-2 group-hover:text-violet-300 transition-colors line-clamp-2">
+                  {article.title}
+                </h3>
+                <p className="text-white/45 text-xs leading-relaxed line-clamp-4 mb-6">
+                  {article.excerpt}
+                </p>
+              </div>
+              <div className="flex items-center justify-between pt-4 border-t border-white/[0.04] text-[11px] text-white/30">
+                <span>Tác giả: {article.author}</span>
+                <span className="flex items-center gap-1 text-violet-400 group-hover:translate-x-1 transition-transform cursor-pointer font-semibold">
+                  Đọc thêm <ChevronRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── FAQ Section ── */}
+      <div className="max-w-3xl mx-auto px-6 pb-24 relative z-10">
+        <div className="text-center mb-12">
+          <span className="text-xs tracking-[0.3em] uppercase text-violet-400 block mb-3">HỖ TRỢ KHÁCH HÀNG</span>
+          <h2 className="text-3xl font-black text-white">Câu hỏi thường gặp</h2>
+        </div>
+        <div className="bg-white/[0.01] border border-white/[0.05] rounded-2xl p-6 md:p-8 backdrop-blur-sm">
+          {FAQS.map((faq, idx) => (
+            <FaqAccordionItem key={idx} question={faq.question} answer={faq.answer} />
           ))}
         </div>
       </div>

@@ -230,3 +230,77 @@ export const COURSES: Course[] = [
 ];
 
 export const FEATURED_COURSE = COURSES[0];
+
+export interface EducationPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  image: string;
+  date: string;
+  category: string;
+  readTime: string;
+  author: string;
+}
+
+export const EDUCATION_BLOG_POSTS: EducationPost[] = [
+  {
+    id: 'p1',
+    title: 'Lộ Trình Học Trí Tuệ Nhân Tạo (AI) Từ Con Số 0 Năm 2026',
+    excerpt: 'Làm thế nào để bước vào thế giới Trí Tuệ Nhân Tạo (AI) khi không có nền tảng toán học hay CNTT quá chuyên sâu? Hãy bắt đầu từ lộ trình bài bản này.',
+    image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&q=80',
+    date: '12 Tháng 06, 2026',
+    category: 'Công nghệ / AI',
+    readTime: '6 phút đọc',
+    author: 'Dr. Lê Thế Hùng'
+  },
+  {
+    id: 'p2',
+    title: '10 Xu Hướng Thiết Kế UI/UX Hàng Đầu Bạn Cần Biết',
+    excerpt: 'Khám phá các thiết kế giao diện mang tính đột phá của năm nay từ Glassmorphism thế hệ mới đến tối giản kết hợp vi mô 3D.',
+    image: 'https://images.unsplash.com/photo-1581291518655-9523c932bfcf?w=500&q=80',
+    date: '10 Tháng 06, 2026',
+    category: 'UI/UX Design',
+    readTime: '4 phút đọc',
+    author: 'Nguyễn Minh Tú'
+  },
+  {
+    id: 'p3',
+    title: 'Tại Sao Lập Trình Viên Fullstack Cần Học Next.js 15?',
+    excerpt: 'Next.js 15 đem lại sự đột phá vượt trội về tốc độ tải trang, SEO tối ưu và cơ chế Server Action cải tiến. Đọc để tìm hiểu lợi ích thực tiễn.',
+    image: 'https://images.unsplash.com/photo-1618401471353-b98aedd07871?w=500&q=80',
+    date: '08 Tháng 06, 2026',
+    category: 'Lập trình / Web',
+    readTime: '5 phút đọc',
+    author: 'Trần Văn Hoàng'
+  },
+  {
+    id: 'p4',
+    title: 'Kỹ Năng Quản Trị Tài Chính Doanh Nghiệp Cho Startup',
+    excerpt: 'Kiểm soát dòng tiền tốt là huyết mạch của sự sống còn của doanh nghiệp mới. Xem ngay các mẹo quản trị tài chính thiết thực.',
+    image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=500&q=80',
+    date: '05 Tháng 06, 2026',
+    category: 'Kinh doanh',
+    readTime: '8 phút đọc',
+    author: 'Đặng Hữu Nam'
+  },
+  {
+    id: 'p5',
+    title: 'Nghệ Thuật Sắp Đặt Bố Cục Trong Nhiếp Ảnh Hiện Đại',
+    excerpt: 'Tìm hiểu quy tắc một phần ba nâng cao, góc nhìn tương phản và kỹ thuật chụp bóng sáng tạo giúp nâng tầm bức hình của bạn.',
+    image: 'https://images.unsplash.com/photo-1452780212940-6f5c0d14d848?w=500&q=80',
+    date: '01 Tháng 06, 2026',
+    category: 'Nhiếp ảnh',
+    readTime: '5 phút đọc',
+    author: 'Hoàng Thế Mỹ'
+  },
+  {
+    id: 'p6',
+    title: 'Xây Dựng Thương Hiệu Cá Nhân Trên Mạng Xã Hội',
+    excerpt: 'Học cách thiết lập profile uy tín, định hình nội dung chia sẻ giá trị và tiếp cận thị trường tiềm năng để phát triển sự nghiệp cá nhân.',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&q=80',
+    date: '28 Tháng 05, 2026',
+    category: 'Marketing',
+    readTime: '7 phút đọc',
+    author: 'Lê Khánh Hà'
+  }
+];

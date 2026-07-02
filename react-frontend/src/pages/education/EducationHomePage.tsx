@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Search, Star, Users, Clock, BookOpen, TrendingUp, Award, ChevronRight, Play } from 'lucide-react';
-import { COURSES, EDUCATION_CATEGORIES, FEATURED_COURSE } from '@/constants/educationData';
+import { COURSES, EDUCATION_CATEGORIES, FEATURED_COURSE, EDUCATION_BLOG_POSTS } from '@/constants/educationData';
 import SharedFooter from '@/components/SharedFooter';
 
 function formatPrice(price: number) {
@@ -173,6 +173,34 @@ export default function EducationHomePage() {
         </div>
       </div>
 
+      {/* ── Why Choose EduHub ── */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="bg-gradient-to-r from-indigo-900 to-slate-900 rounded-2xl p-8 text-white">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="space-y-4">
+              <span className="text-yellow-400 text-xs font-bold tracking-widest uppercase">ƯU ĐIỂM VƯỢT TRỘI</span>
+              <h3 className="text-2xl font-black">Tại sao nên chọn học cùng EduHub?</h3>
+              <p className="text-indigo-200 text-sm leading-relaxed">
+                Chúng tôi cung cấp chương trình đào tạo chuẩn quốc tế với học phí phù hợp cho mọi học viên Việt Nam.
+              </p>
+            </div>
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {[
+                { title: 'Chương trình thực chiến', desc: 'Học qua dự án thực tế, cung cấp kiến thức áp dụng ngay vào công việc thực tế.' },
+                { title: 'Hỗ trợ 1-1 từ Mentor', desc: 'Giải đáp thắc mắc, sửa bài tập trực tiếp từ các giảng viên giàu kinh nghiệm.' },
+                { title: 'Chứng chỉ có giá trị', desc: 'Nhận chứng chỉ tốt nghiệp từ EduHub được các doanh nghiệp tuyển dụng công nhận.' },
+                { title: 'Cộng đồng năng động', desc: 'Tham gia mạng lưới hơn 50.000 học viên, kết nối cơ hội việc làm nhanh chóng.' },
+              ].map((item, idx) => (
+                <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-all">
+                  <h4 className="font-bold text-white mb-2">{item.title}</h4>
+                  <p className="text-indigo-200 text-xs leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* ── Categories ── */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
@@ -216,6 +244,56 @@ export default function EducationHomePage() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* ── Blog & Insights Section ── */}
+      <div className="bg-white border-t border-slate-100 py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+              <span className="text-indigo-600 text-xs font-bold uppercase tracking-wider block mb-1">Cẩm nang & Kiến thức</span>
+              <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">Góc chia sẻ từ các chuyên gia EduHub</h2>
+            </div>
+            <p className="text-slate-500 text-sm max-w-md">Cập nhật xu hướng công nghệ mới nhất, cẩm nang lập trình, thiết kế UI/UX và các bí quyết phát triển bản thân hữu ích.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {EDUCATION_BLOG_POSTS.map((post, i) => (
+              <motion.article 
+                key={post.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.5 }}
+                className="group flex flex-col bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden hover:shadow-xl hover:border-indigo-100 transition-all duration-300"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden bg-slate-200">
+                  <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-indigo-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
+                    {post.category}
+                  </span>
+                </div>
+                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                  <div className="space-y-2">
+                    <span className="text-[10px] text-slate-400 font-medium block">{post.date} • {post.readTime}</span>
+                    <h3 className="font-bold text-slate-800 text-base leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-slate-500 text-xs leading-relaxed line-clamp-3">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                    <span className="text-[11px] font-semibold text-slate-700">Tác giả: {post.author}</span>
+                    <span className="text-indigo-600 text-xs font-bold group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
+                      Đọc thêm <ChevronRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </div>
       </div>
 
       <SharedFooter theme="dark" accentColor="#6366F1" platformName="EduHub" />

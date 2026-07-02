@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Play, Eye, Heart, MessageCircle, Search, TrendingUp, ChevronRight, Bell, Video, ListVideo } from 'lucide-react';
 import { VLOG_POSTS, VLOG_CATEGORIES, CREATORS, TRENDING_POSTS, FEATURED_POST, PLAYLISTS } from '@/constants/vlogData';
+import SharedFooter from '@/components/SharedFooter';
 
 function formatViews(n: number): string {
   if (n >= 1000000) return `${(n / 1000000).toFixed(1)}Tr`;
@@ -84,6 +85,14 @@ function VideoCard({ post, size = 'sm', index = 0 }: { post: typeof VLOG_POSTS[0
     </motion.div>
   );
 }
+
+const SHORTS_MOCK = [
+  { id: 's1', title: 'Review nhanh bàn phím cơ quang học mới cực êm ⌨️', views: '230K', img: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&q=80' },
+  { id: 's2', title: 'Một ngày làm việc của lập trình viên tại Hà Nội ☕', views: '1.2M', img: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=400&q=80' },
+  { id: 's3', title: 'Mẹo thiết kế Figma Auto-Layout đỉnh cao trong 60s 💡', views: '450K', img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80' },
+  { id: 's4', title: 'Thử thách code 1 trang web trong 10 phút ⏱️', views: '95K', img: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=400&q=80' },
+  { id: 's5', title: 'Top 3 ứng dụng hữu ích mà sinh viên CNTT phải biết 🚀', views: '380K', img: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&q=80' }
+];
 
 export default function VlogHomePage() {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -169,20 +178,51 @@ export default function VlogHomePage() {
           <h2 className="font-black text-lg text-white">🌟 Creator nổi bật</h2>
           <Link to="/vlog/creators" className="text-violet-400 text-sm hover:text-violet-300 flex items-center gap-1">Xem tất cả <ChevronRight className="w-4 h-4" /></Link>
         </div>
-        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-          {CREATORS.map(creator => (
-            <Link key={creator.id} to={`/vlog/creator/${creator.handle}`} className="flex-shrink-0 group">
-              <div className="relative">
-                <div className="w-20 h-20 rounded-full ring-2 ring-violet-500/50 group-hover:ring-violet-400 transition-all overflow-hidden">
-                  <img src={creator.avatar} alt={creator.name} className="w-full h-full object-cover" />
+        <div className="flex gap-5 overflow-x-auto pb-2 scrollbar-hide">
+          {CREATORS.map((creator, idx) => {
+            const isLive = idx === 0 || idx === 2; // Make some channels live
+            return (
+              <Link key={creator.id} to={`/vlog/creator/${creator.handle}`} className="flex-shrink-0 group relative text-decoration-none">
+                <div className="relative">
+                  <div className={`w-20 h-20 rounded-full overflow-hidden transition-all ${
+                    isLive 
+                      ? 'ring-2 ring-red-500 ring-offset-2 ring-offset-[#0F0A1A] animate-pulse' 
+                      : 'ring-2 ring-violet-500/50 group-hover:ring-violet-400'
+                  }`}>
+                    <img src={creator.avatar} alt={creator.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                  </div>
+                  {isLive ? (
+                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shadow-md">LIVE</span>
+                  ) : creator.isVerified ? (
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-violet-500 rounded-full flex items-center justify-center border-2 border-[#0F0A1A] text-white text-[10px] font-bold">✓</div>
+                  ) : null}
                 </div>
-                {creator.isVerified && (
-                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-violet-500 rounded-full flex items-center justify-center border-2 border-[#0F0A1A] text-white text-[10px] font-bold">✓</div>
-                )}
+                <p className="text-center text-xs text-white/70 mt-2 max-w-[80px] truncate group-hover:text-white transition-colors">{creator.name.split(' ').slice(-1)[0]}</p>
+                <p className="text-center text-[10px] text-violet-400">{(creator.subscribers / 1000).toFixed(0)}K phụ</p>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── YouTube-Style Shorts Section ── */}
+      <div className="max-w-7xl mx-auto px-6 py-6 border-t border-white/5 bg-black/10">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-red-500 text-lg">⚡</span>
+          <h2 className="font-black text-lg text-white">Shorts</h2>
+        </div>
+        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+          {SHORTS_MOCK.map((short) => (
+            <div key={short.id} className="flex-shrink-0 w-36 sm:w-40 group cursor-pointer">
+              <div className="relative aspect-[9/16] rounded-2xl overflow-hidden mb-2 bg-zinc-950">
+                <img src={short.img} alt={short.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-85" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <span className="absolute bottom-2 left-2 text-[10px] text-white/80 font-medium">👁️ {short.views} lượt xem</span>
               </div>
-              <p className="text-center text-xs text-white/70 mt-2 max-w-[80px] truncate group-hover:text-white transition-colors">{creator.name.split(' ').slice(-1)[0]}</p>
-              <p className="text-center text-[10px] text-violet-400">{(creator.subscribers / 1000).toFixed(0)}K</p>
-            </Link>
+              <h3 className="text-white text-xs font-bold leading-snug line-clamp-2 group-hover:text-violet-300 transition-colors">
+                {short.title}
+              </h3>
+            </div>
           ))}
         </div>
       </div>
@@ -196,7 +236,7 @@ export default function VlogHomePage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((post, i) => (
-            <Link key={post.id} to={`/vlog/video/${post.slug}`} className="group block bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-900/30">
+            <Link key={post.id} to={`/vlog/video/${post.slug}`} className="group block bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[0_0_20px_rgba(139,92,246,0.25)] hover:border-violet-500/40">
               <div className="relative aspect-video overflow-hidden">
                 <img src={post.thumbnail} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

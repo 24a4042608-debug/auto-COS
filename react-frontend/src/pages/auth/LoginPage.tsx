@@ -39,8 +39,8 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-md px-4 animate-fade-in">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 pulse-glow" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
-            <Zap size={28} className="text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 bg-white/5 border border-white/10 p-2">
+            <img src="/logo.png" alt="ACOS Logo" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-3xl font-bold gradient-text mb-1">ACOS</h1>
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>Auto Commerce OS</p>

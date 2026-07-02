@@ -26,12 +26,12 @@ function MovieCard({ movie, showRank, rank, size = "md" }: { movie: Movie; showR
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4 }}
-      className={cn("flex-shrink-0 group relative", widthClass)}
+      className={cn("flex-shrink-0 group relative", widthClass, showRank && "ml-8 mt-4")}
     >
       {/* Rank number (Top 10) */}
       {showRank && rank && (
-        <div className="absolute -left-4 bottom-10 z-20 text-[6rem] font-black leading-none text-zinc-800 select-none stroke-white"
-          style={{ WebkitTextStroke: "1px rgba(255,255,255,0.15)" }}
+        <div className="absolute -left-10 bottom-6 z-0 text-[9rem] font-black leading-none text-[#0e0e15] select-none font-mono tracking-tighter"
+          style={{ WebkitTextStroke: "2px rgba(255,255,255,0.15)", textShadow: "0 0 25px rgba(0,0,0,0.9)" }}
         >
           {rank}
         </div>
@@ -46,36 +46,58 @@ function MovieCard({ movie, showRank, rank, size = "md" }: { movie: Movie; showR
         />
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-3">
-          {/* Play + bookmark buttons */}
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center hover:bg-zinc-200 transition-colors">
-              <Play className="w-4 h-4 text-black fill-black ml-0.5" />
-            </div>
-            <button
-              onClick={(e) => { e.preventDefault(); toggleBookmark(movie.id); }}
-              className={cn(
-                "w-9 h-9 rounded-full border-2 flex items-center justify-center transition-all cursor-pointer",
-                bookmarked
-                  ? "bg-white border-white text-black"
-                  : "border-zinc-500 text-white hover:border-white"
-              )}
-            >
-              {bookmarked ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
-            </button>
-            <div className="ml-auto flex items-center gap-1 text-yellow-400">
-              <Star className="w-3 h-3 fill-yellow-400" />
-              <span className="text-white text-xs font-semibold">{movie.rating}</span>
-            </div>
+        <div className="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-between p-3">
+          {/* Top details */}
+          <div className="flex items-center justify-between">
+            <span className="text-[9px] font-extrabold text-zinc-400 bg-zinc-900 border border-zinc-700 px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
+              {movie.maturityRating || "16+"}
+            </span>
+            <span className="text-[9px] font-bold text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-sm uppercase">
+              {Number(movie.rating) >= 8.5 ? "4K UHD" : "HDR"}
+            </span>
           </div>
 
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {movie.genres.slice(0, 2).map((g) => (
-              <span key={g} className="text-[10px] text-zinc-300 bg-zinc-800/80 px-1.5 py-0.5 rounded-sm">
-                {g}
-              </span>
-            ))}
-            <span className="text-[10px] text-zinc-400 ml-auto">{movie.duration}</span>
+          {/* Middle Brief Description */}
+          <div className="space-y-1 my-2">
+            <p className="text-[10px] text-zinc-300 line-clamp-3 leading-relaxed italic">
+              "{movie.description}"
+            </p>
+            <p className="text-[9px] text-zinc-400 font-medium">
+              Đạo diễn: <span className="text-zinc-200">{movie.director}</span>
+            </p>
+          </div>
+
+          {/* Bottom actions & stats */}
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-zinc-200 transition-colors">
+                <Play className="w-3.5 h-3.5 text-black fill-black ml-0.5" />
+              </div>
+              <button
+                onClick={(e) => { e.preventDefault(); toggleBookmark(movie.id); }}
+                className={cn(
+                  "w-8 h-8 rounded-full border flex items-center justify-center transition-all cursor-pointer",
+                  bookmarked
+                    ? "bg-white border-white text-black"
+                    : "border-zinc-500 text-white hover:border-white"
+                )}
+              >
+                {bookmarked ? <Check className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
+              </button>
+              <div className="ml-auto flex items-center gap-0.5 text-yellow-400">
+                <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                <span className="text-white text-xs font-bold">{movie.rating}</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-zinc-800">
+              {movie.genres.slice(0, 2).map((g) => (
+                <span key={g} className="text-[9px] text-zinc-400">
+                  {g}
+                </span>
+              ))}
+              <span className="text-[9px] text-zinc-500 ml-auto">{movie.duration}</span>
+            </div>
           </div>
         </div>
 

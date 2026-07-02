@@ -90,26 +90,23 @@ export default function StreamingRow({ title, sectionLabel, items, viewAllHref }
                 alt={item.title}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
-              {/* Overlay on hover */}
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-3">
-                <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors">
-                  <Play className="w-5 h-5 text-black fill-black ml-0.5" />
+              {/* Overlay on hover — shows detailed luxury specs instead of play button */}
+              <div className="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-4">
+                <div className="space-y-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                  <span className="text-[#E50914] text-[9px] font-black uppercase tracking-[0.2em] block">ATELIER</span>
+                  <h4 className="text-white text-xs font-black uppercase font-serif tracking-wide leading-tight line-clamp-2">
+                    {item.title}
+                  </h4>
+                  {item.subtitle && (
+                    <p className="text-zinc-400 text-[11px] font-sans font-medium">
+                      {item.subtitle}
+                    </p>
+                  )}
+                  <div className="flex items-center justify-between pt-2 border-t border-white/10 text-[9px] text-zinc-500 font-mono">
+                    <span>{item.year || "COLLECTION 2026"}</span>
+                    <span>{item.rating || "LIMITED"}</span>
+                  </div>
                 </div>
-              </div>
-
-              {/* Tag badge */}
-              {item.tag && (
-                <div className="absolute top-2 left-2 bg-[#E50914] text-white text-[10px] font-bold px-2 py-0.5 uppercase tracking-wider rounded-sm">
-                  {item.tag}
-                </div>
-              )}
-
-              {/* Bottom gradient info bar */}
-              <div className="absolute bottom-0 left-0 right-0 movie-card-overlay p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                <p className="text-white text-xs font-semibold line-clamp-1">{item.title}</p>
-                {item.year && (
-                  <p className="text-zinc-400 text-[10px] mt-0.5">{item.year}</p>
-                )}
               </div>
             </Link>
 
